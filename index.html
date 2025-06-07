@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FJ Cálculos - Soluções especializadas em cálculos e consultoria. Profissionais qualificados para atender suas necessidades.">
+    <meta name="keywords" content="cálculos, consultoria, FJ Cálculos, serviços especializados">
+    <meta name="author" content="FJ Cálculos">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="FJ Cálculos - Assessoria em cálculos judiciais">
+    <meta property="og:description" content="Profissionais qualificados em cálculos e consultoria para atender suas necessidades.">
+    <meta property="og:image" content="./assets/images/logo/2.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="FJ Cálculos - Assessoria em cálculos judiciais">
+    <meta property="twitter:description" content="Profissionais qualificados em cálculos e consultoria para atender suas necessidades.">
+    <meta property="twitter:image" content="./assets/images/logo/2.png">
+
+    <title>FJ Cálculos - Assessoria em cálculos judiciais</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/images/logo/5.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2C2E3D',
+                        secondary: '#FEFEFE',
+                        'blue-light': '#2694A7',
+                        'blue-dark': '#297374',
+                        'orange-light': '#FFC82A',
+                        'orange-dark': '#F58336'
+                    },
+                    fontFamily: {
+                        'century-gothic': ['Century Gothic', 'sans-serif'],
+                        'rosha': ['Rosha Keylin', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-century-gothic text-primary antialiased">
+    <!-- Header / Navigation -->
+    <header class="fixed top-0 w-full bg-primary backdrop-blur-sm shadow-sm z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 lg:h-20">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img src="./assets/images/logo/2.png" alt="FJ Cálculos Logo" class="h-10 lg:h-12 w-auto">
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-secondary hover:text-blue-light transition-colors duration-300">Início</a>
+                    <a href="#servicos" class="text-secondary hover:text-blue-light transition-colors duration-300">Serviços</a>
+                    <a href="#sobre" class="text-secondary hover:text-blue-light transition-colors duration-300">Sobre</a>
+                    <a href="#contato" class="text-secondary hover:text-blue-light transition-colors duration-300">Contato</a>
+                    <button class="bg-gradient-to-r from-blue-light to-blue-dark text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        Solicitar Orçamento
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-secondary hover:text-blue-light transition-colors duration-300">
+                        <span class="material-icons text-2xl">menu</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#inicio" class="block px-3 py-2 text-secondary hover:text-blue-light transition-colors duration-300">Início</a>
+                    <a href="#servicos" class="block px-3 py-2 text-secondary hover:text-blue-light transition-colors duration-300">Serviços</a>
+                    <a href="#sobre" class="block px-3 py-2 text-secondary hover:text-blue-light transition-colors duration-300">Sobre</a>
+                    <a href="#contato" class="block px-3 py-2 text-secondary hover:text-blue-light transition-colors duration-300">Contato</a>
+                    <button class="w-full mt-2 bg-gradient-to-r from-blue-light to-blue-dark text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300">
+                        Solicitar Orçamento
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="pt-16 lg:pt-20 min-h-screen flex items-center bg-gradient-to-br from-secondary via-blue-50 to-orange-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
+                        Acessoria em <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent">Cálculos</span> judiciais
+                    </h1>
+                    <p class="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
+                        Profissionais qualificados oferecendo serviços de alta qualidade em cálculos e consultoria para atender suas necessidades específicas.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button class="bg-gradient-to-r from-blue-light to-blue-dark text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 button-with-icon">
+                            <span class="material-icons mr-2">calculate</span>
+                            Solicitar Orçamento
+                        </button>
+                        <button class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 button-with-icon">
+                            <span class="material-icons inline-block mr-2">info</span>
+                            Saiba Mais
+                        </button>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-light to-orange-dark rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                        <img src="./assets/images/logo/p1.png" alt="FJ Cálculos" class="relative mx-auto h-64 lg:h-80 w-auto drop-shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicos" class="py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-4">Nossos Serviços</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Oferecemos soluções completas e personalizadas para suas necessidades em cálculos especializados
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                        <span class="material-icons text-white text-2xl">calculate</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Cálculos Estruturais</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Análises precisas e detalhadas para projetos estruturais, garantindo segurança e conformidade com normas técnicas.
+                    </p>
+                </div>
+                
+                <!-- Service Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                        <span class="material-icons text-white text-2xl">assessment</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Consultoria Técnica</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Assessoria especializada para tomada de decisões técnicas e otimização de processos em seus projetos.
+                    </p>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                    <div class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6">
+                        <span class="material-icons text-white text-2xl">engineering</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-4">Análise de Projetos</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Revisão completa de projetos existentes com recomendações para melhorias e otimizações.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-6">Sobre a FJ Cálculos</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Com anos de experiência no mercado, a FJ Cálculos se destaca pela excelência em serviços especializados de cálculos e consultoria técnica.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        Nossa equipe de profissionais qualificados está comprometida em entregar soluções precisas e confiáveis, sempre seguindo as melhores práticas e normas técnicas do setor.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-light mb-2">100+</div>
+                            <div class="text-gray-600">Projetos Concluídos</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-orange-dark mb-2">5+</div>
+                            <div class="text-gray-600">Anos de Experiência</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center lg:text-right">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-light to-orange-light rounded-2xl blur-3xl opacity-20"></div>
+                        <div class="relative bg-white p-8 rounded-2xl shadow-xl">
+                            <img src="./assets/images/logo/p2.png" alt="FJ Cálculos" class="mx-auto h-32 w-auto mb-6">
+                            <h3 class="text-xl font-bold text-primary mb-4">Qualidade Garantida</h3>
+                            <p class="text-gray-600">
+                                Compromisso com a excelência em cada projeto entregue.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-20 bg-primary">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Entre em Contato</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Pronto para iniciar seu projeto? Entre em contato conosco e solicite um orçamento personalizado.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div class="bg-white p-8 rounded-2xl shadow-xl">
+                    <h3 class="text-2xl font-bold text-primary mb-6">Solicitar Orçamento</h3>
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300" placeholder="Seu nome completo">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300" placeholder="seu@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300" placeholder="(11) 99999-9999">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300" placeholder="Descreva seu projeto..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-light to-blue-dark text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 button-with-icon">
+                            <span class="material-icons inline-block mr-2">send</span>
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="text-white">
+                    <h3 class="text-2xl font-bold mb-8">Informações de Contato</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="bg-blue-light p-3 rounded-full mr-4 lr-0">
+                                <span class="material-icons text-white">phone</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Telefone</div>
+                                <div class="text-gray-300">(11) 99999-9999</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
+                                <span class="material-icons text-white">email</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold">E-mail</div>
+                                <div class="text-gray-300">contato@jpcalculos.com.br</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-blue-light p-3 rounded-full mr-4 lr-0">
+                                <span class="material-icons text-white">location_on</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Localização</div>
+                                <div class="text-gray-300">São Paulo, SP</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
+                                <span class="material-icons text-white">schedule</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold">Horário de Atendimento</div>
+                                <div class="text-gray-300">Segunda a Sexta: 8h às 18h</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div>
+                    <img src="./assets/images/logo/2.png" alt="FJ Cálculos" class="h-12 w-auto mb-4">
+                    <p class="text-gray-400 leading-relaxed">
+                        Especialista em cálculos judiciais e assessoria jurídica
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#inicio" class="hover:text-blue-light transition-colors duration-300">Início</a></li>
+                        <li><a href="#servicos" class="hover:text-blue-light transition-colors duration-300">Serviços</a></li>
+                        <li><a href="#sobre" class="hover:text-blue-light transition-colors duration-300">Sobre</a></li>
+                        <li><a href="#contato" class="hover:text-blue-light transition-colors duration-300">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Siga-nos</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-blue-light p-2 rounded-full hover:bg-blue-dark transition-colors duration-300 lr-0">
+                            <span class="material-icons text-white">facebook</span>
+                        </a>
+                        <a href="#" class="bg-blue-light p-2 rounded-full hover:bg-blue-dark transition-colors duration-300 lr-0">
+                            <span class="material-icons text-white">email</span>
+                        </a>
+                        <a href="#" class="bg-blue-light p-2 rounded-full hover:bg-blue-dark transition-colors duration-300 lr-0">
+                            <span class="material-icons text-white">phone</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 FJ Cálculos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="./js/script.js"></script>
+</body>
+</html>
