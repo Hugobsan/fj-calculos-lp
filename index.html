@@ -37,7 +37,7 @@
     <link rel="icon" type="image/png" href="./assets/images/logo/5.png" />
 
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -140,7 +140,7 @@
           <div class="text-center lg:text-left">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
               Acessoria em
-              <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent">Cálculos</span>
+              <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent">cálculos</span>
               judiciais
             </h1>
             <p class="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
@@ -295,46 +295,62 @@
           <!-- Contact Form -->
           <div class="bg-white p-8 rounded-2xl shadow-xl">
             <h3 class="text-2xl font-bold text-primary mb-6">Solicitar Orçamento</h3>
-            <form class="space-y-6">
+            <form class="space-y-6" id="form-contato" action="https://formspree.io/f/xnnvjkvd" method="POST">
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
                 <input
                   type="text"
+                  name="nome"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
                   placeholder="Seu nome completo"
+                  required
+                  minlength="2"
+                  maxlength="100"
                 />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
                 <input
                   type="email"
+                  name="email"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
                   placeholder="seu@email.com"
+                  required
+                  minlength="5"
+                  maxlength="100"
                 />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
                 <input
                   type="tel"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
+                  name="telefone"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300 phone-mask"
                   placeholder="(33) 99833-7624"
+                  required
+                  minlength="10"
+                  maxlength="15"
                 />
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
                 <textarea
                   rows="4"
+                  name="mensagem"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
                   placeholder="Descreva seu projeto..."
+                  required
                 ></textarea>
               </div>
               <button
                 type="submit"
+                id="form-submit-button"
                 class="w-full bg-gradient-to-r from-blue-light to-blue-dark text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 button-with-icon"
               >
                 <span class="material-icons inline-block mr-2">send</span>
                 Enviar Mensagem
               </button>
+              <p id="form-status" class="text-sm text-center mt-4"></p>
             </form>
           </div>
 
@@ -450,6 +466,70 @@
         </span>
       </a>
     </div>
+    <!-- Formspree Integration Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementById("form-contato");
+        var submitButton = document.getElementById("form-submit-button");
+        var statusElement = document.getElementById("form-status");
+
+        async function handleSubmit(event) {
+          event.preventDefault();
+
+          // Desabilitar botão e mostrar loading
+          submitButton.disabled = true;
+          submitButton.innerHTML = '<span class="material-icons inline-block mr-2 animate-spin">sync</span>Enviando...';
+          statusElement.innerHTML = "";
+
+          // Obter dados do formulário
+          var formData = new FormData(event.target);
+          var nome = formData.get("nome");
+          var email = formData.get("email");
+          var telefone = formData.get("telefone");
+          var mensagem = formData.get("mensagem");
+
+          try {
+            // Tentar enviar via Formspree primeiro
+            const response = await fetch(event.target.action, {
+              method: form.method,
+              body: formData,
+              headers: {
+                Accept: "application/json",
+              },
+            });
+
+            if (response.ok) {
+              // Sucesso com Formspree
+              statusElement.innerHTML =
+                '<span class="text-green-600 font-semibold">✓ Mensagem enviada com sucesso! Entraremos em contato em breve.</span>';
+              form.reset();
+            } else {
+              // Erro do Formspree, usar fallback
+              throw new Error("Formspree error");
+            }
+          } catch (error) {
+            // Fallback para mailto
+            console.log("Usando fallback mailto devido a:", error.message);
+
+            const corpo = `Nome: ${nome}%0AEmail: ${email}%0ATelefone: ${telefone}%0AMensagem: ${mensagem}`;
+            window.location.href = `mailto:contato@fjcalculos.com?subject=Solicitação de Orçamento&body=${corpo}`;
+
+            statusElement.innerHTML =
+              '<span class="text-blue-600 font-semibold">📧 Abrindo seu cliente de email para enviar a mensagem...</span>';
+          }
+
+          // Reabilitar botão
+          setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<span class="material-icons inline-block mr-2">send</span>Enviar Mensagem';
+          }, 3000);
+        }
+
+        if (form) {
+          form.addEventListener("submit", handleSubmit);
+        }
+      });
+    </script>
 
     <!-- Custom JavaScript -->
     <script src="./js/script.js"></script>

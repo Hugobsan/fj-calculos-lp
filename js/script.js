@@ -6,9 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initScrollEffects();
     initSmoothScrolling();
-    initFormHandling();
+    // initFormHandling(); // Removido - agora usando Formspree
     initAnimationsOnScroll();
     initPerformanceOptimizations();
+
+    // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
+    const phoneInputs = document.querySelectorAll('input.phone-mask');
+    phoneInputs.forEach(input => {
+        applyPhoneMask(input);
+    });
 });
 
 // Funcionalidade do menu mobile
@@ -128,88 +134,6 @@ function initSmoothScrolling() {
             }
         });
     });
-}
-
-// Manipulação de formulários
-function initFormHandling() {
-    const contactForm = document.querySelector('#contato form');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validação dos campos
-            const formData = new FormData(this);
-            const formElements = this.elements;
-            let isValid = true;
-            let errors = [];
-            
-            // Validação básica
-            for (let element of formElements) {
-                if (element.hasAttribute('required') && !element.value.trim()) {
-                    isValid = false;
-                    errors.push(`O campo ${element.previousElementSibling.textContent} é obrigatório`);
-                    element.classList.add('border-red-500');
-                } else {
-                    element.classList.remove('border-red-500');
-                }
-                
-                // Validação de email
-                if (element.type === 'email' && element.value) {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(element.value)) {
-                        isValid = false;
-                        errors.push('Por favor, insira um email válido');
-                        element.classList.add('border-red-500');
-                    }
-                }
-            }
-            
-            if (isValid) {
-                // Simular envio do formulário
-                const submitButton = this.querySelector('button[type="submit"]');
-                const originalText = submitButton.innerHTML;
-                
-                submitButton.innerHTML = '<span class="material-icons animate-spin inline-block mr-2">refresh</span>Enviando...';
-                submitButton.disabled = true;
-                submitButton.classList.add('loading');
-                
-                // Simular delay de envio
-                setTimeout(() => {
-                    submitButton.innerHTML = '<span class="material-icons inline-block mr-2">check</span>Enviado!';
-                    submitButton.classList.remove('loading');
-                    submitButton.classList.add('bg-green-500');
-                    
-                    // Mostrar mensagem de sucesso
-                    showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
-                    
-                    // Reset do formulário
-                    setTimeout(() => {
-                        this.reset();
-                        submitButton.innerHTML = originalText;
-                        submitButton.disabled = false;
-                        submitButton.classList.remove('bg-green-500');
-                    }, 3000);
-                }, 2000);
-            } else {
-                // Mostrar erros
-                showNotification(errors.join('<br>'), 'error');
-            }
-        });
-        
-        // Adicionar validação em tempo real
-        const inputs = contactForm.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('blur', function() {
-                validateField(this);
-            });
-            
-            input.addEventListener('input', function() {
-                // Remover classe de erro ao digitar
-                this.classList.remove('border-red-500');
-            });
-        });
-    }
 }
 
 // Validação individual de campo
@@ -627,3 +551,60 @@ window.WhatsAppUtils = {
     updateNumber: updateWhatsAppNumber,
     isMobile: isMobileDevice
 };
+
+/**
+ * Applies a formatting mask to a given value string.
+ * 
+ * @param {string} value - The input string to be masked
+ * @param {string} mask - The mask pattern where '#' represents a placeholder for input characters
+ * @returns {string} The formatted string with the mask applied
+ *  * @example
+ * // Apply phone number mask
+ * applyMask('1234567890', '(###) ###-####')
+ * // Returns: '(123) 456-7890'
+ * 
+ * @example
+ * // Apply Brazilian phone mask
+ * applyMask('38988386658', '(##) #####-####')
+ * // Returns: '(38) 98838-6658'
+ */
+function applyMask(value, mask) {
+    let maskedValue = '';
+    let valueIndex = 0;
+    
+    for (let maskIndex = 0; maskIndex < mask.length && valueIndex < value.length; maskIndex++) {
+        const maskChar = mask[maskIndex];
+        
+        if (maskChar === '#') {
+            // Adiciona o próximo dígito do valor
+            maskedValue += value[valueIndex];
+            valueIndex++;
+        } else {
+            // Adiciona o caractere da máscara (parênteses, espaços, hífens)
+            maskedValue += maskChar;
+        }
+    }
+    
+    return maskedValue;
+}
+
+// Função que aplica máscara de telefone ao input
+function applyPhoneMask(input) {
+    function formatPhone() {
+        const value = this.value.replace(/\D/g, '');
+        
+        let mask;
+        if (value.length <= 10) {
+            mask = '(##) ####-####';
+        } else {
+            mask = '(##) #####-####';
+        }
+        
+        this.value = applyMask(value, mask);
+    }
+    
+    input.addEventListener('input', formatPhone);
+    input.addEventListener('paste', function() {
+        setTimeout(formatPhone.bind(this), 0);
+    });
+}
