@@ -442,7 +442,6 @@ window.addEventListener('load', function() {
     // Log de performance
     if (performance.timing) {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        console.log(`Página carregada em ${loadTime}ms`);
     }
 });
 
@@ -475,9 +474,6 @@ function initWhatsAppButton() {
                     event_label: 'Floating Button'
                 });
             }
-            
-            // Log para debug
-            console.log('WhatsApp button clicked');
         });
         
         // Efeito de entrada após carregamento da página
