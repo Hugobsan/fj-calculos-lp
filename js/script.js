@@ -460,3 +460,174 @@ if ('serviceWorker' in navigator) {
         //     .catch(error => console.log('Erro no SW:', error));
     });
 }
+
+// Funcionalidades do botão flutuante do WhatsApp
+function initWhatsAppButton() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    if (whatsappButton) {
+        // Adicionar evento de clique com tracking
+        whatsappButton.addEventListener('click', function(e) {
+            // Analytics tracking (se necessário)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'click', {
+                    event_category: 'WhatsApp',
+                    event_label: 'Floating Button'
+                });
+            }
+            
+            // Log para debug
+            console.log('WhatsApp button clicked');
+        });
+        
+        // Efeito de entrada após carregamento da página
+        setTimeout(() => {
+            whatsappButton.classList.add('animate-bounce-in');
+        }, 1500);
+        
+        // Mostrar/esconder baseado no scroll
+        let lastScrollTop = 0;
+        const scrollThreshold = 100;
+        
+        function handleWhatsAppScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const whatsappFloat = document.getElementById('whatsapp-float');
+            
+            if (scrollTop > scrollThreshold) {
+                whatsappFloat.style.opacity = '1';
+                whatsappFloat.style.pointerEvents = 'auto';
+            } else {
+                whatsappFloat.style.opacity = '0.7';
+                whatsappFloat.style.pointerEvents = 'auto';
+            }
+            
+            lastScrollTop = scrollTop;
+        }
+        
+        // Throttle do scroll para performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(handleWhatsAppScroll, 10);
+        });
+    }
+}
+
+// Função para detectar se o usuário está em um dispositivo móvel
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Personalizar link do WhatsApp baseado no dispositivo
+function customizeWhatsAppLink() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    if (whatsappButton) {
+        const currentHref = whatsappButton.getAttribute('href');
+        
+        // Se for mobile, usar o protocolo do app
+        if (isMobileDevice()) {
+            const phoneNumber = '5511999999999'; // Substitua pelo número real
+            const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
+            whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${message}`);
+        }
+    }
+}
+
+// Adicionar efeito de shake ocasional para chamar atenção
+function addShakeEffect() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    if (whatsappButton) {
+        setInterval(() => {
+            // Shake a cada 30 segundos se o usuário não interagiu
+            if (!document.hidden && !whatsappButton.classList.contains('recently-hovered')) {
+                whatsappButton.classList.add('animate-shake');
+                setTimeout(() => {
+                    whatsappButton.classList.remove('animate-shake');
+                }, 1000);
+            }
+        }, 30000);
+        
+        // Marcar como recentemente hovereado
+        whatsappButton.addEventListener('mouseenter', () => {
+            whatsappButton.classList.add('recently-hovered');
+            setTimeout(() => {
+                whatsappButton.classList.remove('recently-hovered');
+            }, 60000); // Remove a marca após 1 minuto
+        });
+    }
+}
+
+// Adicionar animação de shake ao CSS
+function addShakeAnimation() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .animate-bounce-in {
+            animation: bounceIn 0.6s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateX(100px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Inicializar funcionalidades do WhatsApp quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    addShakeAnimation();
+    initWhatsAppButton();
+    customizeWhatsAppLink();
+    
+    // Adicionar shake effect após 5 segundos
+    setTimeout(addShakeEffect, 5000);
+});
+
+// Função para atualizar o número do WhatsApp dinamicamente
+function updateWhatsAppNumber(phoneNumber, customMessage = '') {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    if (whatsappButton && phoneNumber) {
+        const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
+        const encodedMessage = encodeURIComponent(message);
+        
+        if (isMobileDevice()) {
+            whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`);
+        } else {
+            whatsappButton.setAttribute('href', `https://wa.me/${phoneNumber}?text=${encodedMessage}`);
+        }
+    }
+}
+
+// Exportar funções para uso global se necessário
+window.WhatsAppUtils = {
+    updateNumber: updateWhatsAppNumber,
+    isMobile: isMobileDevice
+};

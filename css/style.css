@@ -337,3 +337,118 @@ img {
 .lr-0{
     line-height: 0 !important;
 }
+
+/* Estilos para o botão flutuante do WhatsApp */
+.whatsapp-button {
+    position: relative;
+    min-width: 60px;
+    min-height: 60px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    border-radius: 50%;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    animation: whatsapp-pulse 2s infinite;
+    z-index: 1000;
+}
+
+.whatsapp-button:hover {
+    background: linear-gradient(135deg, #128C7E, #075E54);
+    box-shadow: 0 8px 32px rgba(37, 211, 102, 0.6);
+    transform: translateY(-8px) scale(1.05);
+}
+
+.whatsapp-button img {
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover img {
+    transform: scale(1.1);
+}
+
+/* Animação de pulso para o botão */
+@keyframes whatsapp-pulse {
+    0% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    70% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* Tooltip do WhatsApp */
+.whatsapp-button .absolute {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover .absolute {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Versão mobile do botão */
+@media (max-width: 768px) {
+    .whatsapp-button {
+        min-width: 56px;
+        min-height: 56px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .whatsapp-button img {
+        width: 28px;
+        height: 28px;
+    }
+    
+    /* Esconder tooltip no mobile */
+    .whatsapp-button .absolute {
+        display: none;
+    }
+}
+
+/* Efeito adicional de entrada */
+#whatsapp-float {
+    animation: slideInFromRight 0.8s ease-out 1s both;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Melhorar acessibilidade */
+.whatsapp-button:focus {
+    outline: 3px solid #25D366;
+    outline-offset: 2px;
+}
+
+/* Efeito de clique */
+.whatsapp-button:active {
+    transform: translateY(-6px) scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Estilo para dispositivos com hover limitado */
+@media (hover: none) {
+    .whatsapp-button:hover {
+        transform: none;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    }
+    
+    .whatsapp-button:active {
+        transform: scale(0.95);
+        background: linear-gradient(135deg, #128C7E, #075E54);
+    }
+}
