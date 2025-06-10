@@ -466,7 +466,7 @@ function addShakeEffect() {
                     whatsappButton.classList.remove('animate-shake');
                 }, 1000);
             }
-        }, 15000);
+        }, 20000);
 
         // Marcar como recentemente hovereado
         whatsappButton.addEventListener('mouseenter', () => {
@@ -555,11 +555,6 @@ window.WhatsAppUtils = {
  * @param {string} value - The input string to be masked
  * @param {string} mask - The mask pattern where '#' represents a placeholder for input characters
  * @returns {string} The formatted string with the mask applied
- *  * @example
- * // Apply phone number mask
- * applyMask('1234567890', '(###) ###-####')
- * // Returns: '(123) 456-7890'
- * 
  * @example
  * // Apply Brazilian phone mask
  * applyMask('38988386658', '(##) #####-####')
