@@ -6,9 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     initScrollEffects();
     initSmoothScrolling();
-    // initFormHandling(); // Removido - agora usando Formspree
     initAnimationsOnScroll();
     initPerformanceOptimizations();
+    initWhatsAppIntegration();
+    initCTAButtons();
+    initFormspreeIntegration();
 
     // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
     const phoneInputs = document.querySelectorAll('input.phone-mask');
@@ -400,11 +402,6 @@ function initWhatsAppButton() {
             }
         });
         
-        // Efeito de entrada após carregamento da página
-        setTimeout(() => {
-            whatsappButton.classList.add('animate-bounce-in');
-        }, 1500);
-        
         // Mostrar/esconder baseado no scroll
         let lastScrollTop = 0;
         const scrollThreshold = 100;
@@ -449,7 +446,7 @@ function customizeWhatsAppLink() {
         
         // Se for mobile, usar o protocolo do app
         if (isMobileDevice()) {
-            const phoneNumber = '5511999999999'; // Substitua pelo número real
+            const phoneNumber = '553398337624'; // Substitua pelo número real
             const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
             whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${message}`);
         }
@@ -462,15 +459,15 @@ function addShakeEffect() {
     
     if (whatsappButton) {
         setInterval(() => {
-            // Shake a cada 30 segundos se o usuário não interagiu
+            // Shake a cada 15 segundos se o usuário não interagiu
             if (!document.hidden && !whatsappButton.classList.contains('recently-hovered')) {
                 whatsappButton.classList.add('animate-shake');
                 setTimeout(() => {
                     whatsappButton.classList.remove('animate-shake');
                 }, 1000);
             }
-        }, 30000);
-        
+        }, 15000);
+
         // Marcar como recentemente hovereado
         whatsappButton.addEventListener('mouseenter', () => {
             whatsappButton.classList.add('recently-hovered');
@@ -607,4 +604,124 @@ function applyPhoneMask(input) {
     input.addEventListener('paste', function() {
         setTimeout(formatPhone.bind(this), 0);
     });
+}
+
+// ========= FUNÇÕES DE INTEGRAÇÃO =========
+
+// Inicializar integração do WhatsApp
+function initWhatsAppIntegration() {
+    // Configurar número do WhatsApp
+    updateWhatsAppNumber('553398337624', 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
+    
+    // Inicializar funcionalidades específicas do WhatsApp
+    initWhatsAppButton();
+    customizeWhatsAppLink();
+    
+    // Adicionar efeito de shake ocasional
+    addShakeEffect();
+    addShakeAnimation();
+}
+
+// Inicializar botões CTA
+function initCTAButtons() {
+    // Adicionar evento aos botões CTA
+    const ctaButtons = document.querySelectorAll('[data-cta]');
+    ctaButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const ctaType = this.getAttribute('data-cta');
+            
+            switch(ctaType) {
+                case 'quote':
+                    // Rolar para o formulário de contato
+                    document.getElementById('contato').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Focar no primeiro campo do formulário
+                    setTimeout(() => {
+                        const nomeField = document.querySelector('input[name="nome"]');
+                        if (nomeField) nomeField.focus();
+                    }, 500);
+                    break;
+                case 'contact':
+                    // Rolar para a seção sobre
+                    document.getElementById('sobre').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    break;
+            }
+            
+            // Tracking de eventos (analytics)
+            console.log('CTA clicked:', ctaType);
+        });
+    });
+}
+
+// Integração com Formspree
+function initFormspreeIntegration() {
+    const form = document.getElementById('form-contato');
+    const submitButton = document.getElementById('form-submit-button');
+    const statusElement = document.getElementById('form-status');
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+        // Desabilitar botão e mostrar loading
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="material-icons inline-block mr-2 animate-spin">refresh</span>Enviando...';
+
+        // Obter dados do formulário
+        const formData = new FormData(form);
+        const nome = formData.get('nome');
+        const email = formData.get('email');
+        const telefone = formData.get('telefone');
+        const mensagem = formData.get('mensagem');
+
+        try {
+            // Tentar enviar via Formspree
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                },
+            });
+
+            if (response.ok) {
+                // Sucesso com Formspree
+                statusElement.innerHTML =
+                    '<span class="text-green-600 font-semibold">✓ Mensagem enviada com sucesso! Entraremos em contato em breve.</span>';
+                form.reset();
+                
+                // Usar função de notificação
+                showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+            } else {
+                // Erro do Formspree, usar fallback
+                throw new Error("Formspree error");
+            }
+        } catch (error) {
+            // Fallback para mailto
+            console.log("Usando fallback mailto devido a:", error.message);
+
+            const corpo = `Nome: ${nome}%0AEmail: ${email}%0ATelefone: ${telefone}%0AMensagem: ${mensagem}`;
+            window.location.href = `mailto:contato@fjcalculos.com?subject=Solicitação de Orçamento&body=${corpo}`;
+
+            statusElement.innerHTML =
+                '<span class="text-blue-600 font-semibold">📧 Abrindo seu cliente de email para enviar a mensagem...</span>';
+            
+            // Usar função de notificação
+            showNotification('Abrindo seu cliente de email para enviar a mensagem...', 'info');
+        }
+
+        // Reabilitar botão
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<span class="material-icons inline-block mr-2">send</span>Enviar Mensagem';
+        }, 3000);
+    }
+
+    if (form) {
+        form.addEventListener("submit", handleSubmit);
+    }
 }
