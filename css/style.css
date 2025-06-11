@@ -49,6 +49,52 @@ body {
   overflow-x: hidden;
 }
 
+/* ========= ESTILOS DO BANNER DE COOKIES ========= */
+#cookie-banner {
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#cookie-banner .container {
+  max-width: 1200px;
+}
+
+#cookie-banner button {
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+#cookie-banner button:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsividade para o banner de cookies */
+@media (max-width: 640px) {
+  #cookie-banner {
+    padding: 1rem;
+  }
+
+  #cookie-banner .flex {
+    gap: 0.75rem;
+  }
+
+  #cookie-banner button {
+    min-width: 70px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Animação suave para o banner */
+#cookie-banner.translate-y-0 {
+  transform: translateY(0);
+}
+
+#cookie-banner.translate-y-full {
+  transform: translateY(100%);
+}
+
 /* Estilos para acessibilidade */
 .sr-only {
   position: absolute;

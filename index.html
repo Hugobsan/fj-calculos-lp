@@ -114,8 +114,7 @@
     <title>FJ Cálculos - Acessoria em cálculos judiciais</title>
     <link rel="preload" href="./assets/images/logo/2.png" as="image" type="image/png" />
     <link rel="preload" href="./css/style.css" as="style" />
-    <link rel="preload" href="./js/script.js" as="script" />
-    <!-- Google tag (gtag.js) -->
+    <link rel="preload" href="./js/script.js" as="script" />    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QD3J50R2JT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -124,7 +123,14 @@
       }
       gtag("js", new Date());
 
-      gtag("config", "G-QD3J50R2JT");
+      // Configurar consentimento padrão
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied'
+      });
+
+      gtag("config", "G-QD3J50R2JT", {
+        'anonymize_ip': true
+      });
     </script>
 
     <!-- DNS prefetch for external resources -->
@@ -720,6 +726,7 @@
         </div>
       </div>
     </footer>
+
     <!-- Botão Flutuante WhatsApp -->
     <div id="whatsapp-float" class="fixed bottom-6 right-6 z-50">
       <a
@@ -740,6 +747,35 @@
           Fale conosco no WhatsApp
         </span>
       </a>
+    </div>
+
+    <!-- Banner de Cookies -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 transform translate-y-full transition-transform duration-500 z-40 hidden">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="material-icons text-orange-light">cookie</span>
+            <div class="text-sm sm:text-base">
+              <p class="font-medium">Este site utiliza cookies</p>
+              <p class="text-gray-300 text-xs sm:text-sm">Usamos cookies e Google Analytics para melhorar sua experiência.</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button
+              id="cookie-accept"
+              class="bg-blue-light hover:bg-blue-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
+            >
+              Aceitar
+            </button>
+            <button
+              id="cookie-decline"
+              class="border border-gray-400 hover:bg-gray-700 text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300"
+            >
+              Recusar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Custom JavaScript -->

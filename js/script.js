@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initWhatsAppIntegration();
     initCTAButtons();
     initFormspreeIntegration();
+    initCookieBanner();
 
     // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
     const phoneInputs = document.querySelectorAll('input.phone-mask');
@@ -752,57 +753,209 @@ window.WhatsAppUtils = {
     isMobile: isMobileDevice
 };
 
-/**
- * Applies a formatting mask to a given value string.
- * 
- * @param {string} value - The input string to be masked
- * @param {string} mask - The mask pattern where '#' represents a placeholder for input characters
- * @returns {string} The formatted string with the mask applied
- * @example
- * // Apply Brazilian phone mask
- * applyMask('38988386658', '(##) #####-####')
- * // Returns: '(38) 98838-6658'
- */
-function applyMask(value, mask) {
-    let maskedValue = '';
-    let valueIndex = 0;
+// ========= FUNÇÕES DE GERENCIAMENTO DE COOKIES =========
 
-    for (let maskIndex = 0; maskIndex < mask.length && valueIndex < value.length; maskIndex++) {
-        const maskChar = mask[maskIndex];
+// Inicializar banner de cookies
+function initCookieBanner() {
+    console.log('Inicializando banner de cookies...');
 
-        if (maskChar === '#') {
-            // Adiciona o próximo dígito do valor
-            maskedValue += value[valueIndex];
-            valueIndex++;
-        } else {
-            // Adiciona o caractere da máscara (parênteses, espaços, hífens)
-            maskedValue += maskChar;
-        }
+    // Verificar se o usuário já fez uma escolha sobre cookies
+    const cookieConsent = getCookieConsent();
+    
+    // Verificar se o consentimento expirou (365 dias)
+    if (cookieConsent !== null && isCookieConsentExpired()) {
+        console.log('Consentimento de cookies expirado, resetando...');
+        setCookieConsent(null);
+        showCookieBanner();
+        return;
+    }
+    
+    if (cookieConsent === null) {
+        // Primeira visita - mostrar banner
+        showCookieBanner();
+    } else if (cookieConsent === 'accepted') {
+        // Cookies aceitos - habilitar Google Analytics
+        enableGoogleAnalytics();
+    } else {
+        // Cookies recusados - desabilitar Google Analytics
+        disableGoogleAnalytics();
     }
 
-    return maskedValue;
+    // Configurar event listeners para os botões
+    setupCookieButtons();
 }
 
-// Função que aplica máscara de telefone ao input
-function applyPhoneMask(input) {
-    function formatPhone() {
-        const value = this.value.replace(/\D/g, '');
+// Mostrar banner de cookies
+function showCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    
+    if (banner) {
+        banner.classList.remove('hidden');
+        
+        // Animar entrada do banner
+        setTimeout(() => {
+            banner.classList.remove('translate-y-full');
+            banner.classList.add('translate-y-0');
+        }, 100);
 
-        let mask;
-        if (value.length <= 10) {
-            mask = '(##) ####-####';
-        } else {
-            mask = '(##) #####-####';
-        }
+        console.log('Banner de cookies exibido');
+    }
+}
 
-        this.value = applyMask(value, mask);
+// Esconder banner de cookies
+function hideCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    
+    if (banner) {
+        banner.classList.remove('translate-y-0');
+        banner.classList.add('translate-y-full');
+        
+        // Esconder completamente após animação
+        setTimeout(() => {
+            banner.classList.add('hidden');
+        }, 500);
+
+        console.log('Banner de cookies ocultado');
+    }
+}
+
+// Configurar event listeners para botões do banner
+function setupCookieButtons() {
+    const acceptButton = document.getElementById('cookie-accept');
+    const declineButton = document.getElementById('cookie-decline');
+
+    if (acceptButton) {
+        acceptButton.addEventListener('click', function() {
+            setCookieConsent('accepted');
+            enableGoogleAnalytics();
+            hideCookieBanner();
+            
+            showNotification('Cookies aceitos. Obrigado por nos ajudar a melhorar sua experiência!', 'success');
+            
+            console.log('Cookies aceitos pelo usuário');
+        });
     }
 
-    input.addEventListener('input', formatPhone);
-    input.addEventListener('paste', function () {
-        setTimeout(formatPhone.bind(this), 0);
-    });
+    if (declineButton) {
+        declineButton.addEventListener('click', function() {
+            setCookieConsent('declined');
+            disableGoogleAnalytics();
+            hideCookieBanner();
+            
+            showNotification('Preferências de cookies salvas.', 'info');
+            
+            console.log('Cookies recusados pelo usuário');
+        });
+    }
 }
+
+// Obter consentimento de cookies do localStorage
+function getCookieConsent() {
+    try {
+        return localStorage.getItem('fjcalculos_cookie_consent');
+    } catch (error) {
+        console.warn('Erro ao acessar localStorage:', error);
+        return null;
+    }
+}
+
+// Definir consentimento de cookies no localStorage
+function setCookieConsent(consent) {
+    try {
+        if (consent === null) {
+            localStorage.removeItem('fjcalculos_cookie_consent');
+            localStorage.removeItem('fjcalculos_cookie_date');
+            localStorage.removeItem('fjcalculos_cookie_type');
+        } else {
+            localStorage.setItem('fjcalculos_cookie_consent', consent);
+            localStorage.setItem('fjcalculos_cookie_date', new Date().toISOString());
+            localStorage.setItem('fjcalculos_cookie_type', consent);
+        }
+    } catch (error) {
+        console.warn('Erro ao salvar no localStorage:', error);
+    }
+}
+
+// Habilitar Google Analytics
+function enableGoogleAnalytics() {
+    console.log('Google Analytics habilitado');
+    
+    // Se gtag estiver disponível, garantir que está ativo
+    if (typeof gtag !== 'undefined') {
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+        });
+        
+        gtag('event', 'cookie_consent', {
+            'event_category': 'Privacy',
+            'event_label': 'Accepted',
+            'value': 1
+        });
+    }
+}
+
+// Desabilitar Google Analytics
+function disableGoogleAnalytics() {
+    console.log('Google Analytics desabilitado');
+    
+    // Se gtag estiver disponível, desabilitar
+    if (typeof gtag !== 'undefined') {
+        gtag('consent', 'update', {
+            'analytics_storage': 'denied'
+        });
+        
+        gtag('event', 'cookie_consent', {
+            'event_category': 'Privacy',
+            'event_label': 'Declined',
+            'value': 0
+        });
+    }
+}
+
+// Função para resetar consentimento de cookies (para testes ou se o usuário quiser alterar)
+function resetCookieConsent() {
+    try {
+        localStorage.removeItem('fjcalculos_cookie_consent');
+        localStorage.removeItem('fjcalculos_cookie_date');
+        localStorage.removeItem('fjcalculos_cookie_type');
+        console.log('Consentimento de cookies resetado');
+    } catch (error) {
+        console.warn('Erro ao resetar consentimento:', error);
+    }
+}
+
+// Função para verificar se o consentimento está expirado
+function isCookieConsentExpired() {
+    try {
+        const consentDate = localStorage.getItem('fjcalculos_cookie_date');
+        const consentType = localStorage.getItem('fjcalculos_cookie_type');
+        
+        if (!consentDate || !consentType) return true;
+        
+        const consentTime = new Date(consentDate).getTime();
+        const currentTime = new Date().getTime();
+        
+        // Se foi recusado, expira em 1 hora (60 minutos)
+        if (consentType === 'declined') {
+            const oneHour = 60 * 60 * 1000; // 1 hora em millisegundos
+            return (currentTime - consentTime) > oneHour;
+        }
+        
+        // Se foi aceito, expira em 365 dias
+        const oneYear = 365 * 24 * 60 * 60 * 1000; // 365 dias em millisegundos
+        return (currentTime - consentTime) > oneYear;
+    } catch (error) {
+        console.warn('Erro ao verificar expiração do consentimento:', error);
+        return true;
+    }
+}
+
+// Exportar funções de cookies para uso global se necessário
+window.CookieUtils = {
+    reset: resetCookieConsent,
+    getConsent: getCookieConsent,
+    isExpired: isCookieConsentExpired
+};
 
 // ========= FUNÇÕES DE INTEGRAÇÃO =========
 
