@@ -448,16 +448,77 @@ function initWhatsAppButton() {
     const whatsappButton = document.querySelector('.whatsapp-button');
     
     if (whatsappButton) {
+        console.log('Botão WhatsApp encontrado, inicializando...');
+        
+        // Remover qualquer evento anterior
+        whatsappButton.removeEventListener('click', handleWhatsAppClick);
+        
         // Adicionar evento de clique com tracking
-        whatsappButton.addEventListener('click', function(e) {
-            // Analytics tracking (se necessário)
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'click', {
-                    event_category: 'WhatsApp',
-                    event_label: 'Floating Button'
-                });
+        whatsappButton.addEventListener('click', handleWhatsAppClick);
+        
+        // Garantir que o link seja configurado imediatamente
+        customizeWhatsAppLink();
+        
+    } else {
+        console.error('Botão WhatsApp não encontrado!');
+    }
+}
+
+// Função separada para lidar com o clique do WhatsApp
+function handleWhatsAppClick(e) {
+    e.preventDefault(); // Prevenir comportamento padrão
+    
+    console.log('Clique no WhatsApp detectado!');
+    
+    const href = this.getAttribute('href');
+    console.log('URL atual do botão:', href);
+    
+    // Se o href não estiver configurado, configurar agora
+    if (!href || href === '#') {
+        console.log('Link não configurado, configurando agora...');
+        customizeWhatsAppLink();
+        
+        // Aguardar um momento e tentar novamente
+        setTimeout(() => {
+            const newHref = this.getAttribute('href');
+            console.log('Nova URL após configuração:', newHref);
+            if (newHref && newHref !== '#') {
+                console.log('Abrindo WhatsApp com URL:', newHref);
+                window.open(newHref, '_blank', 'noopener,noreferrer');
+            } else {
+                console.error('Falha ao configurar link do WhatsApp');
             }
+        }, 100);
+        return;
+    }
+    
+    // Se o href está configurado, abrir diretamente
+    console.log('Abrindo WhatsApp com URL:', href);
+    window.open(href, '_blank', 'noopener,noreferrer');
+    
+    // Analytics tracking (se necessário)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+            event_category: 'WhatsApp',
+            event_label: 'Floating Button'
         });
+    }
+}
+
+function initWhatsAppButton() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+    
+    if (whatsappButton) {
+        console.log('Botão WhatsApp encontrado, inicializando...');
+        
+        // Remover qualquer evento anterior
+        whatsappButton.removeEventListener('click', handleWhatsAppClick);
+        
+        // Adicionar evento de clique com tracking
+        whatsappButton.addEventListener('click', handleWhatsAppClick);
+        
+        // Garantir que o link seja configurado imediatamente
+        customizeWhatsAppLink();
         
         // Mostrar/esconder baseado no scroll
         let lastScrollTop = 0;
@@ -486,12 +547,71 @@ function initWhatsAppButton() {
             }
             scrollTimeout = setTimeout(handleWhatsAppScroll, 10);
         });
+    } else {
+        console.error('Botão WhatsApp não encontrado!');
+    }
+}
+
+// Função separada para lidar com o clique do WhatsApp
+function handleWhatsAppClick(e) {
+    e.preventDefault(); // Prevenir comportamento padrão
+    
+    console.log('Clique no WhatsApp detectado!');
+    
+    const href = this.getAttribute('href');
+    console.log('URL atual do botão:', href);
+    
+    // Se o href não estiver configurado, configurar agora
+    if (!href || href === '#') {
+        console.log('Link não configurado, configurando agora...');
+        customizeWhatsAppLink();
+        
+        // Aguardar um momento e tentar novamente
+        setTimeout(() => {
+            const newHref = this.getAttribute('href');
+            console.log('Nova URL após configuração:', newHref);
+            if (newHref && newHref !== '#') {
+                console.log('Abrindo WhatsApp com URL:', newHref);
+                window.open(newHref, '_blank', 'noopener,noreferrer');
+            } else {
+                console.error('Falha ao configurar link do WhatsApp');
+            }
+        }, 100);
+        return;
+    }
+    
+    // Se o href está configurado, abrir diretamente
+    console.log('Abrindo WhatsApp com URL:', href);
+    window.open(href, '_blank', 'noopener,noreferrer');
+    
+    // Analytics tracking (se necessário)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'click', {
+            event_category: 'WhatsApp',
+            event_label: 'Floating Button'
+        });
     }
 }
 
 // Função para detectar se o usuário está em um dispositivo móvel
 function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // Verificar através do user agent
+    const userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Verificar através do tamanho da tela
+    const screenMobile = window.innerWidth <= 768;
+    
+    // Verificar se suporta touch
+    const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    console.log('Mobile detection:', {
+        userAgent: userAgentMobile,
+        screenSize: screenMobile,
+        touchSupport: touchSupport,
+        final: userAgentMobile || (screenMobile && touchSupport)
+    });
+    
+    return userAgentMobile || (screenMobile && touchSupport);
 }
 
 // Personalizar link do WhatsApp baseado no dispositivo
@@ -499,14 +619,19 @@ function customizeWhatsAppLink() {
     const whatsappButton = document.querySelector('.whatsapp-button');
     
     if (whatsappButton) {
-        const currentHref = whatsappButton.getAttribute('href');
+        const phoneNumber = '553398337624';
+        const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
         
         // Se for mobile, usar o protocolo do app
         if (isMobileDevice()) {
-            const phoneNumber = '553398337624'; // Substitua pelo número real
-            const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
             whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${message}`);
+        } else {
+            // Para desktop, usar wa.me
+            whatsappButton.setAttribute('href', `https://wa.me/${phoneNumber}?text=${message}`);
         }
+        
+        console.log('WhatsApp link configurado para:', isMobileDevice() ? 'Mobile' : 'Desktop');
+        console.log('Link:', whatsappButton.getAttribute('href'));
     }
 }
 
@@ -592,11 +717,19 @@ function updateWhatsAppNumber(phoneNumber, customMessage = '') {
         const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
         const encodedMessage = encodeURIComponent(message);
         
+        let href;
         if (isMobileDevice()) {
-            whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`);
+            href = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
         } else {
-            whatsappButton.setAttribute('href', `https://wa.me/${phoneNumber}?text=${encodedMessage}`);
+            href = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
         }
+        
+        whatsappButton.setAttribute('href', href);
+        console.log('WhatsApp number updated:', phoneNumber);
+        console.log('Device type:', isMobileDevice() ? 'Mobile' : 'Desktop');
+        console.log('Generated link:', href);
+    } else {
+        console.error('WhatsApp button not found or phone number not provided');
     }
 }
 
@@ -662,16 +795,22 @@ function applyPhoneMask(input) {
 
 // Inicializar integração do WhatsApp
 function initWhatsAppIntegration() {
-    // Configurar número do WhatsApp
+    console.log('Inicializando integração WhatsApp...');
+    
+    // Configurar número do WhatsApp primeiro
     updateWhatsAppNumber('553398337624', 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
+    
+    // Depois customizar o link baseado no dispositivo
+    customizeWhatsAppLink();
     
     // Inicializar funcionalidades específicas do WhatsApp
     initWhatsAppButton();
-    customizeWhatsAppLink();
     
     // Adicionar efeito de shake ocasional
     addShakeEffect();
     addShakeAnimation();
+    
+    console.log('Integração WhatsApp inicializada com sucesso!');
 }
 
 // Inicializar botões CTA
