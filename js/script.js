@@ -230,32 +230,89 @@ function initAnimationsOnScroll() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const element = entry.target;
-                
-                // Adicionar classes de animação baseadas na posição
+                const element = entry.target;                // Adicionar classes de animação baseadas na posição
                 if (element.classList.contains('animate-on-scroll')) {
                     element.classList.add('animate-fade-in-up');
+                    
+                    // Verificar se é o card especial e aplicar efeito mais suave
+                    if (element.classList.contains('special-effect-card')) {
+                        setTimeout(() => {
+                            element.classList.add('special-glow');
+                        }, 800);
+                    }
                 }
                 
                 if (element.classList.contains('animate-left')) {
                     element.classList.add('animate-fade-in-left');
-                }
-                
-                if (element.classList.contains('animate-right')) {
+                }                if (element.classList.contains('animate-right')) {
                     element.classList.add('animate-fade-in-right');
+                }                // Efeito especial para cards destacados
+                if (element.classList.contains('animate-special-effect')) {
+                    console.log('Aplicando efeito especial ao elemento:', element);
+                    // Apenas adicionar o efeito de shimmer após 0.5s
+                    setTimeout(() => {
+                        element.classList.add('animate-shimmer');
+                    }, 500);
                 }
-                
+
+                // Animação de contador para números
+                if (element.classList.contains('animate-counter')) {
+                    element.classList.add('animate-fade-in-up');
+                    animateCounter(element);
+                }
+
+                // Animação escalonada para informações de contato
+                if (element.classList.contains('animate-contact-info')) {
+                    const contactItems = element.querySelectorAll('.flex.items-center');
+                    contactItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.animation = `slideInFromLeft 0.6s ease-out forwards`;
+                        }, index * 200); // 200ms de delay entre cada item
+                    });
+                }
+
                 // Parar de observar após animar
                 observer.unobserve(element);
             }
         });
-    }, observerOptions);
-    
-    // Observar elementos que devem ser animados
-    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right');
+    }, observerOptions);    // Observar elementos que devem ser animados
+    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-special-effect, .animate-counter, .animate-contact-info');
     elementsToAnimate.forEach(element => {
         observer.observe(element);
     });
+}
+
+// Função para animar contadores numéricos
+function animateCounter(element) {
+    const numberElement = element.querySelector('.text-3xl');
+    if (!numberElement) return;
+    
+    const originalText = numberElement.textContent;
+    const target = parseInt(originalText.replace(/\D/g, ''));
+    
+    if (isNaN(target) || target === 0) return;
+    
+    const duration = 1000;
+    const increment = target / (duration / 16); // 60 FPS
+    let current = 0;
+    
+    const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+            if (originalText.includes('+')) {
+                numberElement.textContent = `${Math.floor(current)}+`;
+            } else {
+                numberElement.textContent = Math.floor(current).toString();
+            }
+            requestAnimationFrame(updateCounter);
+        } else {
+            // Restaurar texto original
+            numberElement.textContent = originalText;
+        }
+    };
+    
+    updateCounter();
 }
 
 // Otimizações de performance
