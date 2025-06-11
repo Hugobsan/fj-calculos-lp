@@ -757,14 +757,12 @@ window.WhatsAppUtils = {
 
 // Inicializar banner de cookies
 function initCookieBanner() {
-    console.log('Inicializando banner de cookies...');
 
     // Verificar se o usuário já fez uma escolha sobre cookies
     const cookieConsent = getCookieConsent();
     
     // Verificar se o consentimento expirou (365 dias)
     if (cookieConsent !== null && isCookieConsentExpired()) {
-        console.log('Consentimento de cookies expirado, resetando...');
         setCookieConsent(null);
         showCookieBanner();
         return;
@@ -829,10 +827,6 @@ function setupCookieButtons() {
             setCookieConsent('accepted');
             enableGoogleAnalytics();
             hideCookieBanner();
-            
-            showNotification('Cookies aceitos. Obrigado por nos ajudar a melhorar sua experiência!', 'success');
-            
-            console.log('Cookies aceitos pelo usuário');
         });
     }
 
@@ -841,10 +835,6 @@ function setupCookieButtons() {
             setCookieConsent('declined');
             disableGoogleAnalytics();
             hideCookieBanner();
-            
-            showNotification('Preferências de cookies salvas.', 'info');
-            
-            console.log('Cookies recusados pelo usuário');
         });
     }
 }
