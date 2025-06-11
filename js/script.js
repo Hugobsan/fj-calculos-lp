@@ -1,7 +1,7 @@
 // Aguardar carregamento completo do DOM
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('JP Cálculos - Landing Page carregada');
-    
+
     // Inicializar funcionalidades
     initMobileMenu();
     initScrollEffects();
@@ -24,17 +24,17 @@ function initMobileMenu() {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = mobileMenuButton.querySelector('.material-icons');
-    
+
     if (mobileMenuButton && mobileMenu) {
-        mobileMenuButton.addEventListener('click', function() {
+        mobileMenuButton.addEventListener('click', function () {
             const isHidden = mobileMenu.classList.contains('hidden');
-            
+
             if (isHidden) {
                 mobileMenu.classList.remove('hidden');
                 mobileMenu.classList.add('mobile-menu-open');
                 mobileMenu.classList.remove('mobile-menu-closed');
                 menuIcon.textContent = 'close';
-                
+
                 // Adicionar ARIA attributes para acessibilidade
                 mobileMenuButton.setAttribute('aria-expanded', 'true');
                 mobileMenu.setAttribute('aria-hidden', 'false');
@@ -42,18 +42,18 @@ function initMobileMenu() {
                 mobileMenu.classList.add('mobile-menu-closed');
                 mobileMenu.classList.remove('mobile-menu-open');
                 menuIcon.textContent = 'menu';
-                
+
                 // Esconder o menu após a animação
                 setTimeout(() => {
                     mobileMenu.classList.add('hidden');
                 }, 300);
-                
+
                 // Atualizar ARIA attributes
                 mobileMenuButton.setAttribute('aria-expanded', 'false');
                 mobileMenu.setAttribute('aria-hidden', 'true');
             }
         });
-        
+
         // Fechar menu ao clicar em links
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(link => {
@@ -74,19 +74,19 @@ function initScrollEffects() {
     const header = document.querySelector('header');
     let lastScrollTop = 0;
     let isScrolling = false;
-    
+
     function handleScroll() {
         if (!isScrolling) {
             window.requestAnimationFrame(() => {
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
+
                 // Adicionar classe quando rolar para baixo
                 if (scrollTop > 50) {
                     header.classList.add('header-scrolled');
                 } else {
                     header.classList.remove('header-scrolled');
                 }
-                
+
                 // Efeito de esconder/mostrar header (opcional)
                 if (scrollTop > lastScrollTop && scrollTop > 100) {
                     // Rolando para baixo
@@ -95,14 +95,14 @@ function initScrollEffects() {
                     // Rolando para cima
                     header.style.transform = 'translateY(0)';
                 }
-                
+
                 lastScrollTop = scrollTop;
                 isScrolling = false;
             });
         }
         isScrolling = true;
     }
-    
+
     // Throttle do evento de scroll
     let ticking = false;
     window.addEventListener('scroll', () => {
@@ -117,18 +117,18 @@ function initScrollEffects() {
 // Scroll suave para links de navegação
 function initSmoothScrolling() {
     const navLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = document.querySelector('header').offsetHeight;
                 const targetPosition = targetElement.offsetTop - headerHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -141,12 +141,12 @@ function initSmoothScrolling() {
 // Validação individual de campo
 function validateField(field) {
     let isValid = true;
-    
+
     if (field.hasAttribute('required') && !field.value.trim()) {
         isValid = false;
         field.classList.add('border-red-500');
     }
-    
+
     if (field.type === 'email' && field.value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(field.value)) {
@@ -154,12 +154,12 @@ function validateField(field) {
             field.classList.add('border-red-500');
         }
     }
-    
+
     if (isValid) {
         field.classList.remove('border-red-500');
         field.classList.add('border-green-500');
     }
-    
+
     return isValid;
 }
 
@@ -170,7 +170,7 @@ function showNotification(message, type = 'info') {
     if (existing) {
         existing.remove();
     }
-    
+
     const notification = document.createElement('div');
     notification.className = `notification fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-md ${getNotificationClasses(type)}`;
     notification.innerHTML = `
@@ -182,9 +182,9 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto-remover após 5 segundos
     setTimeout(() => {
         if (notification.parentElement) {
@@ -226,14 +226,14 @@ function initAnimationsOnScroll() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const element = entry.target;                // Adicionar classes de animação baseadas na posição
                 if (element.classList.contains('animate-on-scroll')) {
                     element.classList.add('animate-fade-in-up');
-                    
+
                     // Verificar se é o card especial e aplicar efeito mais suave
                     if (element.classList.contains('special-effect-card')) {
                         setTimeout(() => {
@@ -241,10 +241,20 @@ function initAnimationsOnScroll() {
                         }, 800);
                     }
                 }
-                
+
+                if(element.classList.contains('animate-in')){
+                    element.classList.add('animate-bounce-in');
+                }
+                if(element.classList.contains('pulse')){
+                    element.classList.add('animate-pulse');
+                }
+                if(element.classList.contains('slide-in-scale')) {
+                    element.classList.add('animate-slide-in-scale');
+                }
+
                 if (element.classList.contains('animate-left')) {
                     element.classList.add('animate-fade-in-left');
-                }                if (element.classList.contains('animate-right')) {
+                } if (element.classList.contains('animate-right')) {
                     element.classList.add('animate-fade-in-right');
                 }                // Efeito especial para cards destacados
                 if (element.classList.contains('animate-special-effect')) {
@@ -277,7 +287,7 @@ function initAnimationsOnScroll() {
             }
         });
     }, observerOptions);    // Observar elementos que devem ser animados
-    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-special-effect, .animate-counter, .animate-contact-info');
+    const elementsToAnimate = document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-special-effect, .animate-counter, .animate-contact-info, .animate-in, .pulse, .slide-in-scale');
     elementsToAnimate.forEach(element => {
         observer.observe(element);
     });
@@ -287,16 +297,16 @@ function initAnimationsOnScroll() {
 function animateCounter(element) {
     const numberElement = element.querySelector('.text-3xl');
     if (!numberElement) return;
-    
+
     const originalText = numberElement.textContent;
     const target = parseInt(originalText.replace(/\D/g, ''));
-    
+
     if (isNaN(target) || target === 0) return;
-    
+
     const duration = 1000;
     const increment = target / (duration / 16); // 60 FPS
     let current = 0;
-    
+
     const updateCounter = () => {
         current += increment;
         if (current < target) {
@@ -311,7 +321,7 @@ function animateCounter(element) {
             numberElement.textContent = originalText;
         }
     };
-    
+
     updateCounter();
 }
 
@@ -329,14 +339,14 @@ function initPerformanceOptimizations() {
             }
         });
     });
-    
+
     images.forEach(img => imageObserver.observe(img));
-    
+
     // Preload de recursos críticos
     const preloadResources = [
         './assets/images/logo/2.png'
     ];
-    
+
     preloadResources.forEach(resource => {
         const link = document.createElement('link');
         link.rel = 'preload';
@@ -363,7 +373,7 @@ function debounce(func, wait, immediate) {
 
 function throttle(func, limit) {
     let inThrottle;
-    return function() {
+    return function () {
         const args = arguments;
         const context = this;
         if (!inThrottle) {
@@ -375,13 +385,13 @@ function throttle(func, limit) {
 }
 
 // Event listeners para botões de CTA
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const ctaButtons = document.querySelectorAll('[data-cta]');
-    
+
     ctaButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const ctaType = this.dataset.cta;
-            
+
             // Analytics tracking (se necessário)
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'click', {
@@ -389,12 +399,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     event_label: ctaType
                 });
             }
-            
+
             // Scroll para formulário de contato
             if (ctaType === 'contact' || ctaType === 'quote') {
                 const contactSection = document.querySelector('#contato');
                 if (contactSection) {
                     contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Scroll para seção de serviços
+            if (ctaType === 'services') {
+                const servicesSection = document.querySelector('#servicos');
+                if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            // Scroll para seção sobre
+            if (ctaType === 'about') {
+                const aboutSection = document.querySelector('#sobre');
+                if (aboutSection) {
+                    aboutSection.scrollIntoView({ behavior: 'smooth' });
                 }
             }
         });
@@ -406,7 +432,7 @@ function detectColorScheme() {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.classList.add('dark-mode');
     }
-    
+
     // Escutar mudanças
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         if (e.matches) {
@@ -418,10 +444,10 @@ function detectColorScheme() {
 }
 
 // Inicialização de recursos opcionais
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Detectar modo escuro
     detectColorScheme();
-    
+
     // Log de performance
     if (performance.timing) {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
@@ -429,14 +455,14 @@ window.addEventListener('load', function() {
 });
 
 // Tratamento de erros globais
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
     console.error('Erro capturado:', e.error);
     // Aqui você pode implementar logging de erros para um serviço externo
 });
 
 // Service Worker registration (para PWA futuro)
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         // navigator.serviceWorker.register('/sw.js')
         //     .then(registration => console.log('SW registrado'))
         //     .catch(error => console.log('Erro no SW:', error));
@@ -446,19 +472,19 @@ if ('serviceWorker' in navigator) {
 // Funcionalidades do botão flutuante do WhatsApp
 function initWhatsAppButton() {
     const whatsappButton = document.querySelector('.whatsapp-button');
-    
+
     if (whatsappButton) {
         console.log('Botão WhatsApp encontrado, inicializando...');
-        
+
         // Remover qualquer evento anterior
         whatsappButton.removeEventListener('click', handleWhatsAppClick);
-        
+
         // Adicionar evento de clique com tracking
         whatsappButton.addEventListener('click', handleWhatsAppClick);
-        
+
         // Garantir que o link seja configurado imediatamente
         customizeWhatsAppLink();
-        
+
     } else {
         console.error('Botão WhatsApp não encontrado!');
     }
@@ -467,30 +493,30 @@ function initWhatsAppButton() {
 // Função separada para lidar com o clique do WhatsApp
 function handleWhatsAppClick(e) {
     e.preventDefault(); // Prevenir comportamento padrão
-    
+
     console.log('Clique no WhatsApp detectado!');
-    
+
     const phoneNumber = '553398337624';
     const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
-    
+
     console.log('Dispositivo móvel:', isMobileDevice());
-    
+
     if (isMobileDevice()) {
         // Para mobile: tentar app primeiro, depois fallback para wa.me
         const whatsappAppUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
         const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-        
+
         console.log('Tentando abrir app WhatsApp:', whatsappAppUrl);
-        
+
         // Método mais confiável: tentar window.location primeiro
         window.location.href = whatsappAppUrl;
-        
+
         // Fallback para wa.me se o app não abrir
         const fallbackTimer = setTimeout(() => {
             console.log('App não abriu, usando fallback wa.me:', waUrl);
             window.open(waUrl, '_blank', 'noopener,noreferrer');
         }, 2000);
-        
+
         // Se a página perder o foco (app abriu), cancelar o fallback
         const blurHandler = () => {
             console.log('Página perdeu foco, app provavelmente abriu');
@@ -498,7 +524,7 @@ function handleWhatsAppClick(e) {
             window.removeEventListener('blur', blurHandler);
             window.removeEventListener('visibilitychange', visibilityHandler);
         };
-        
+
         const visibilityHandler = () => {
             if (document.hidden) {
                 console.log('Página ficou invisível, app provavelmente abriu');
@@ -507,24 +533,24 @@ function handleWhatsAppClick(e) {
                 window.removeEventListener('visibilitychange', visibilityHandler);
             }
         };
-        
+
         window.addEventListener('blur', blurHandler);
         window.addEventListener('visibilitychange', visibilityHandler);
-        
+
         // Limpar após 3 segundos independentemente
         setTimeout(() => {
             clearTimeout(fallbackTimer);
             window.removeEventListener('blur', blurHandler);
             window.removeEventListener('visibilitychange', visibilityHandler);
         }, 3000);
-        
+
     } else {
         // Para desktop: usar wa.me diretamente
         const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
         console.log('Abrindo wa.me para desktop:', waUrl);
         window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
-    
+
     // Analytics tracking (se necessário)
     if (typeof gtag !== 'undefined') {
         gtag('event', 'click', {
@@ -534,29 +560,30 @@ function handleWhatsAppClick(e) {
     }
 }
 
+// Funcionalidades do botão flutuante do WhatsApp
 function initWhatsAppButton() {
     const whatsappButton = document.querySelector('.whatsapp-button');
-    
+
     if (whatsappButton) {
         console.log('Botão WhatsApp encontrado, inicializando...');
-        
+
         // Remover qualquer evento anterior
         whatsappButton.removeEventListener('click', handleWhatsAppClick);
-        
+
         // Adicionar evento de clique com tracking
         whatsappButton.addEventListener('click', handleWhatsAppClick);
-        
+
         // Garantir que o link seja configurado imediatamente
         customizeWhatsAppLink();
-        
+
         // Mostrar/esconder baseado no scroll
         let lastScrollTop = 0;
         const scrollThreshold = 100;
-        
+
         function handleWhatsAppScroll() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const whatsappFloat = document.getElementById('whatsapp-float');
-            
+
             if (scrollTop > scrollThreshold) {
                 whatsappFloat.style.opacity = '1';
                 whatsappFloat.style.pointerEvents = 'auto';
@@ -564,10 +591,10 @@ function initWhatsAppButton() {
                 whatsappFloat.style.opacity = '0.7';
                 whatsappFloat.style.pointerEvents = 'auto';
             }
-            
+
             lastScrollTop = scrollTop;
         }
-        
+
         // Throttle do scroll para performance
         let scrollTimeout;
         window.addEventListener('scroll', () => {
@@ -580,37 +607,34 @@ function initWhatsAppButton() {
         console.error('Botão WhatsApp não encontrado!');
     }
 }
-
-// Função separada para lidar com o clique do WhatsApp
-// Função para detectar se o usuário está em um dispositivo móvel
 function isMobileDevice() {
     // Verificar através do user agent
     const userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+
     // Verificar através do tamanho da tela
     const screenMobile = window.innerWidth <= 768;
-    
+
     // Verificar se suporta touch
     const touchSupport = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
+
     console.log('Mobile detection:', {
         userAgent: userAgentMobile,
         screenSize: screenMobile,
         touchSupport: touchSupport,
         final: userAgentMobile || (screenMobile && touchSupport)
     });
-    
+
     return userAgentMobile || (screenMobile && touchSupport);
 }
 
 // Personalizar link do WhatsApp baseado no dispositivo
 function customizeWhatsAppLink() {
     const whatsappButton = document.querySelector('.whatsapp-button');
-    
+
     if (whatsappButton) {
         const phoneNumber = '553398337624';
         const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
-        
+
         // Se for mobile, usar o protocolo do app
         if (isMobileDevice()) {
             whatsappButton.setAttribute('href', `whatsapp://send?phone=${phoneNumber}&text=${message}`);
@@ -618,7 +642,7 @@ function customizeWhatsAppLink() {
             // Para desktop, usar wa.me
             whatsappButton.setAttribute('href', `https://wa.me/${phoneNumber}?text=${message}`);
         }
-        
+
         console.log('WhatsApp link configurado para:', isMobileDevice() ? 'Mobile' : 'Desktop');
         console.log('Link:', whatsappButton.getAttribute('href'));
     }
@@ -627,7 +651,7 @@ function customizeWhatsAppLink() {
 // Adicionar efeito de shake ocasional para chamar atenção
 function addShakeEffect() {
     const whatsappButton = document.querySelector('.whatsapp-button');
-    
+
     if (whatsappButton) {
         setInterval(() => {
             // Shake a cada 15 segundos se o usuário não interagiu
@@ -689,11 +713,11 @@ function addShakeAnimation() {
 }
 
 // Inicializar funcionalidades do WhatsApp quando a página carregar
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     addShakeAnimation();
     initWhatsAppButton();
     customizeWhatsAppLink();
-    
+
     // Adicionar shake effect após 5 segundos
     setTimeout(addShakeEffect, 5000);
 });
@@ -701,18 +725,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // Função para atualizar o número do WhatsApp dinamicamente
 function updateWhatsAppNumber(phoneNumber, customMessage = '') {
     const whatsappButton = document.querySelector('.whatsapp-button');
-    
+
     if (whatsappButton && phoneNumber) {
         const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
         const encodedMessage = encodeURIComponent(message);
-        
+
         let href;
         if (isMobileDevice()) {
             href = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
         } else {
             href = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
         }
-        
+
         whatsappButton.setAttribute('href', href);
         console.log('WhatsApp number updated:', phoneNumber);
         console.log('Device type:', isMobileDevice() ? 'Mobile' : 'Desktop');
@@ -742,10 +766,10 @@ window.WhatsAppUtils = {
 function applyMask(value, mask) {
     let maskedValue = '';
     let valueIndex = 0;
-    
+
     for (let maskIndex = 0; maskIndex < mask.length && valueIndex < value.length; maskIndex++) {
         const maskChar = mask[maskIndex];
-        
+
         if (maskChar === '#') {
             // Adiciona o próximo dígito do valor
             maskedValue += value[valueIndex];
@@ -755,7 +779,7 @@ function applyMask(value, mask) {
             maskedValue += maskChar;
         }
     }
-    
+
     return maskedValue;
 }
 
@@ -763,19 +787,19 @@ function applyMask(value, mask) {
 function applyPhoneMask(input) {
     function formatPhone() {
         const value = this.value.replace(/\D/g, '');
-        
+
         let mask;
         if (value.length <= 10) {
             mask = '(##) ####-####';
         } else {
             mask = '(##) #####-####';
         }
-        
+
         this.value = applyMask(value, mask);
     }
-    
+
     input.addEventListener('input', formatPhone);
-    input.addEventListener('paste', function() {
+    input.addEventListener('paste', function () {
         setTimeout(formatPhone.bind(this), 0);
     });
 }
@@ -785,20 +809,20 @@ function applyPhoneMask(input) {
 // Inicializar integração do WhatsApp
 function initWhatsAppIntegration() {
     console.log('Inicializando integração WhatsApp...');
-    
+
     // Configurar número do WhatsApp primeiro
     updateWhatsAppNumber('553398337624', 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
-    
+
     // Depois customizar o link baseado no dispositivo
     customizeWhatsAppLink();
-    
+
     // Inicializar funcionalidades específicas do WhatsApp
     initWhatsAppButton();
-    
+
     // Adicionar efeito de shake ocasional
     addShakeEffect();
     addShakeAnimation();
-    
+
     console.log('Integração WhatsApp inicializada com sucesso!');
 }
 
@@ -807,13 +831,13 @@ function initCTAButtons() {
     // Adicionar evento aos botões CTA
     const ctaButtons = document.querySelectorAll('[data-cta]');
     ctaButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const ctaType = this.getAttribute('data-cta');
-            
-            switch(ctaType) {
+
+            switch (ctaType) {
                 case 'quote':
                     // Rolar para o formulário de contato
-                    document.getElementById('contato').scrollIntoView({ 
+                    document.getElementById('contato').scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
@@ -825,13 +849,13 @@ function initCTAButtons() {
                     break;
                 case 'contact':
                     // Rolar para a seção sobre
-                    document.getElementById('sobre').scrollIntoView({ 
+                    document.getElementById('sobre').scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
                     break;
             }
-            
+
             // Tracking de eventos (analytics)
             console.log('CTA clicked:', ctaType);
         });
@@ -873,7 +897,7 @@ function initFormspreeIntegration() {
                 statusElement.innerHTML =
                     '<span class="text-green-600 font-semibold">✓ Mensagem enviada com sucesso! Entraremos em contato em breve.</span>';
                 form.reset();
-                
+
                 // Usar função de notificação
                 showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
             } else {
@@ -889,7 +913,7 @@ function initFormspreeIntegration() {
 
             statusElement.innerHTML =
                 '<span class="text-blue-600 font-semibold">📧 Abrindo seu cliente de email para enviar a mensagem...</span>';
-            
+
             // Usar função de notificação
             showNotification('Abrindo seu cliente de email para enviar a mensagem...', 'info');
         }

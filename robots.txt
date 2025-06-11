@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://fjcalculos.com.br/sitemap.xml
+
+# Block access to source files
+Disallow: /js/
+Disallow: /css/
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Allow important pages
+Allow: /
+Allow: /index.html
+
+# Crawl delay
+Crawl-delay: 1
