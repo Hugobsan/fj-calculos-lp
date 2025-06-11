@@ -470,31 +470,60 @@ function handleWhatsAppClick(e) {
     
     console.log('Clique no WhatsApp detectado!');
     
-    const href = this.getAttribute('href');
-    console.log('URL atual do botão:', href);
+    const phoneNumber = '553398337624';
+    const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
     
-    // Se o href não estiver configurado, configurar agora
-    if (!href || href === '#') {
-        console.log('Link não configurado, configurando agora...');
-        customizeWhatsAppLink();
+    console.log('Dispositivo móvel:', isMobileDevice());
+    
+    if (isMobileDevice()) {
+        // Para mobile: tentar app primeiro, depois fallback para wa.me
+        const whatsappAppUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+        const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
         
-        // Aguardar um momento e tentar novamente
-        setTimeout(() => {
-            const newHref = this.getAttribute('href');
-            console.log('Nova URL após configuração:', newHref);
-            if (newHref && newHref !== '#') {
-                console.log('Abrindo WhatsApp com URL:', newHref);
-                window.open(newHref, '_blank', 'noopener,noreferrer');
-            } else {
-                console.error('Falha ao configurar link do WhatsApp');
+        console.log('Tentando abrir app WhatsApp:', whatsappAppUrl);
+        
+        // Método mais confiável: tentar window.location primeiro
+        window.location.href = whatsappAppUrl;
+        
+        // Fallback para wa.me se o app não abrir
+        const fallbackTimer = setTimeout(() => {
+            console.log('App não abriu, usando fallback wa.me:', waUrl);
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }, 2000);
+        
+        // Se a página perder o foco (app abriu), cancelar o fallback
+        const blurHandler = () => {
+            console.log('Página perdeu foco, app provavelmente abriu');
+            clearTimeout(fallbackTimer);
+            window.removeEventListener('blur', blurHandler);
+            window.removeEventListener('visibilitychange', visibilityHandler);
+        };
+        
+        const visibilityHandler = () => {
+            if (document.hidden) {
+                console.log('Página ficou invisível, app provavelmente abriu');
+                clearTimeout(fallbackTimer);
+                window.removeEventListener('blur', blurHandler);
+                window.removeEventListener('visibilitychange', visibilityHandler);
             }
-        }, 100);
-        return;
+        };
+        
+        window.addEventListener('blur', blurHandler);
+        window.addEventListener('visibilitychange', visibilityHandler);
+        
+        // Limpar após 3 segundos independentemente
+        setTimeout(() => {
+            clearTimeout(fallbackTimer);
+            window.removeEventListener('blur', blurHandler);
+            window.removeEventListener('visibilitychange', visibilityHandler);
+        }, 3000);
+        
+    } else {
+        // Para desktop: usar wa.me diretamente
+        const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+        console.log('Abrindo wa.me para desktop:', waUrl);
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
     }
-    
-    // Se o href está configurado, abrir diretamente
-    console.log('Abrindo WhatsApp com URL:', href);
-    window.open(href, '_blank', 'noopener,noreferrer');
     
     // Analytics tracking (se necessário)
     if (typeof gtag !== 'undefined') {
@@ -553,46 +582,6 @@ function initWhatsAppButton() {
 }
 
 // Função separada para lidar com o clique do WhatsApp
-function handleWhatsAppClick(e) {
-    e.preventDefault(); // Prevenir comportamento padrão
-    
-    console.log('Clique no WhatsApp detectado!');
-    
-    const href = this.getAttribute('href');
-    console.log('URL atual do botão:', href);
-    
-    // Se o href não estiver configurado, configurar agora
-    if (!href || href === '#') {
-        console.log('Link não configurado, configurando agora...');
-        customizeWhatsAppLink();
-        
-        // Aguardar um momento e tentar novamente
-        setTimeout(() => {
-            const newHref = this.getAttribute('href');
-            console.log('Nova URL após configuração:', newHref);
-            if (newHref && newHref !== '#') {
-                console.log('Abrindo WhatsApp com URL:', newHref);
-                window.open(newHref, '_blank', 'noopener,noreferrer');
-            } else {
-                console.error('Falha ao configurar link do WhatsApp');
-            }
-        }, 100);
-        return;
-    }
-    
-    // Se o href está configurado, abrir diretamente
-    console.log('Abrindo WhatsApp com URL:', href);
-    window.open(href, '_blank', 'noopener,noreferrer');
-    
-    // Analytics tracking (se necessário)
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'click', {
-            event_category: 'WhatsApp',
-            event_label: 'Floating Button'
-        });
-    }
-}
-
 // Função para detectar se o usuário está em um dispositivo móvel
 function isMobileDevice() {
     // Verificar através do user agent
