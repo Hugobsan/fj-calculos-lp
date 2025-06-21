@@ -385,7 +385,9 @@ function throttle(func, limit) {
     };
 }
 
-// Event listeners para botões de CTA
+// Event listeners para botões de CTA - REMOVIDO: conflito com initCTAButtons()
+// Esta implementação foi substituída pela função initCTAButtons() que inclui integração WhatsApp
+/*
 document.addEventListener('DOMContentLoaded', function () {
     const ctaButtons = document.querySelectorAll('[data-cta]');
 
@@ -427,6 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+*/
 
 // Detecção de modo escuro (para futuro suporte)
 function detectColorScheme() {
@@ -731,12 +734,8 @@ function updateWhatsAppNumber(phoneNumber, customMessage = '') {
         const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
         const encodedMessage = encodeURIComponent(message);
 
-        let href;
-        if (isMobileDevice()) {
-            href = `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
-        } else {
-            href = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-        }
+        //Setando href usando getWhatsAppUrl
+        let href = getWhatsAppUrl(phoneNumber, message);
 
         whatsappButton.setAttribute('href', href);
         console.log('WhatsApp number updated:', phoneNumber);
@@ -747,10 +746,28 @@ function updateWhatsAppNumber(phoneNumber, customMessage = '') {
     }
 }
 
+// Função para pegar a URL do WhatsApp
+function getWhatsAppUrl(phoneNumber, customMessage = '') {
+    if (!phoneNumber) {
+        console.error('Número de telefone não fornecido');
+        return '';
+    }
+
+    const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
+    const encodedMessage = encodeURIComponent(message);
+
+    if (isMobileDevice()) {
+        return `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`;
+    } else {
+        return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    }
+}
+
 // Exportar funções para uso global se necessário
 window.WhatsAppUtils = {
     updateNumber: updateWhatsAppNumber,
-    isMobile: isMobileDevice
+    isMobile: isMobileDevice,
+    getUrl: getWhatsAppUrl
 };
 
 // ========= FUNÇÕES DE GERENCIAMENTO DE COOKIES =========
@@ -972,27 +989,46 @@ function initWhatsAppIntegration() {
 // Inicializar botões CTA
 function initCTAButtons() {
     // Adicionar evento aos botões CTA
-    const ctaButtons = document.querySelectorAll('[data-cta]');
-    ctaButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const ctaType = this.getAttribute('data-cta');
-
-            switch (ctaType) {
+    const ctaButtons = document.querySelectorAll('[data-cta]');    ctaButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevenir comportamento padrão
+            const ctaType = this.getAttribute('data-cta');switch (ctaType) {
                 case 'quote':
-                    // Rolar para o formulário de contato
-                    document.getElementById('contato').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Focar no primeiro campo do formulário
-                    setTimeout(() => {
-                        const nomeField = document.querySelector('input[name="nome"]');
-                        if (nomeField) nomeField.focus();
-                    }, 500);
-                    break;
-                case 'contact':
-                    // Rolar para a seção sobre
-                    document.getElementById('sobre').scrollIntoView({
+                    // Abrir WhatsApp com mensagem de orçamento
+                    const phoneNumber = '553398337624';
+                    const quoteMessage = 'Olá! Gostaria de solicitar um orçamento personalizado para cálculos judiciais. Poderia me enviar mais informações sobre os serviços e valores?';
+                    const whatsappUrl = getWhatsAppUrl(phoneNumber, quoteMessage);
+                    
+                    if (whatsappUrl) {
+                        if (isMobileDevice()) {
+                            // Para mobile: tentar app primeiro
+                            window.location.href = whatsappUrl;
+                        } else {
+                            // Para desktop: abrir em nova aba
+                            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                        }
+                        
+                        // Analytics tracking
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'click', {
+                                event_category: 'WhatsApp',
+                                event_label: 'CTA Quote Button'
+                            });
+                        }
+                    } else {
+                        // Fallback: rolar para o formulário de contato
+                        document.getElementById('contato').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        setTimeout(() => {
+                            const nomeField = document.querySelector('input[name="nome"]');
+                            if (nomeField) nomeField.focus();
+                        }, 500);
+                    }
+                    break;                case 'services':
+                    // Rolar para a seção de serviços
+                    document.getElementById('servicos').scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
