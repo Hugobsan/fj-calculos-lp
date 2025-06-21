@@ -243,13 +243,13 @@ function initAnimationsOnScroll() {
                     }
                 }
 
-                if(element.classList.contains('animate-in')){
+                if (element.classList.contains('animate-in')) {
                     element.classList.add('animate-bounce-in');
                 }
-                if(element.classList.contains('pulse')){
+                if (element.classList.contains('pulse')) {
                     element.classList.add('animate-pulse');
                 }
-                if(element.classList.contains('slide-in-scale')) {
+                if (element.classList.contains('slide-in-scale')) {
                     element.classList.add('animate-slide-in-scale');
                 }
 
@@ -384,52 +384,6 @@ function throttle(func, limit) {
         }
     };
 }
-
-// Event listeners para botões de CTA - REMOVIDO: conflito com initCTAButtons()
-// Esta implementação foi substituída pela função initCTAButtons() que inclui integração WhatsApp
-/*
-document.addEventListener('DOMContentLoaded', function () {
-    const ctaButtons = document.querySelectorAll('[data-cta]');
-
-    ctaButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const ctaType = this.dataset.cta;
-
-            // Analytics tracking (se necessário)
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'click', {
-                    event_category: 'CTA',
-                    event_label: ctaType
-                });
-            }
-
-            // Scroll para formulário de contato
-            if (ctaType === 'contact' || ctaType === 'quote') {
-                const contactSection = document.querySelector('#contato');
-                if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-
-            // Scroll para seção de serviços
-            if (ctaType === 'services') {
-                const servicesSection = document.querySelector('#servicos');
-                if (servicesSection) {
-                    servicesSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-
-            // Scroll para seção sobre
-            if (ctaType === 'about') {
-                const aboutSection = document.querySelector('#sobre');
-                if (aboutSection) {
-                    aboutSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    });
-});
-*/
 
 // Detecção de modo escuro (para futuro suporte)
 function detectColorScheme() {
@@ -750,7 +704,7 @@ function updateWhatsAppNumber(phoneNumber, customMessage = '') {
 function getWhatsAppUrl(phoneNumber, customMessage = '') {
     if (!phoneNumber) {
         console.error('Número de telefone não fornecido');
-        return '';
+        phoneNumber = '553398337624'; // Fallback para o número padrão
     }
 
     const message = customMessage || 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.';
@@ -777,14 +731,14 @@ function initCookieBanner() {
 
     // Verificar se o usuário já fez uma escolha sobre cookies
     const cookieConsent = getCookieConsent();
-    
+
     // Verificar se o consentimento expirou (365 dias)
     if (cookieConsent !== null && isCookieConsentExpired()) {
         setCookieConsent(null);
         showCookieBanner();
         return;
     }
-    
+
     if (cookieConsent === null) {
         // Primeira visita - mostrar banner
         showCookieBanner();
@@ -803,10 +757,10 @@ function initCookieBanner() {
 // Mostrar banner de cookies
 function showCookieBanner() {
     const banner = document.getElementById('cookie-banner');
-    
+
     if (banner) {
         banner.classList.remove('hidden');
-        
+
         // Animar entrada do banner
         setTimeout(() => {
             banner.classList.remove('translate-y-full');
@@ -820,11 +774,11 @@ function showCookieBanner() {
 // Esconder banner de cookies
 function hideCookieBanner() {
     const banner = document.getElementById('cookie-banner');
-    
+
     if (banner) {
         banner.classList.remove('translate-y-0');
         banner.classList.add('translate-y-full');
-        
+
         // Esconder completamente após animação
         setTimeout(() => {
             banner.classList.add('hidden');
@@ -840,7 +794,7 @@ function setupCookieButtons() {
     const declineButton = document.getElementById('cookie-decline');
 
     if (acceptButton) {
-        acceptButton.addEventListener('click', function() {
+        acceptButton.addEventListener('click', function () {
             setCookieConsent('accepted');
             enableGoogleAnalytics();
             hideCookieBanner();
@@ -848,7 +802,7 @@ function setupCookieButtons() {
     }
 
     if (declineButton) {
-        declineButton.addEventListener('click', function() {
+        declineButton.addEventListener('click', function () {
             setCookieConsent('declined');
             disableGoogleAnalytics();
             hideCookieBanner();
@@ -886,13 +840,13 @@ function setCookieConsent(consent) {
 // Habilitar Google Analytics
 function enableGoogleAnalytics() {
     console.log('Google Analytics habilitado');
-    
+
     // Se gtag estiver disponível, garantir que está ativo
     if (typeof gtag !== 'undefined') {
         gtag('consent', 'update', {
             'analytics_storage': 'granted'
         });
-        
+
         gtag('event', 'cookie_consent', {
             'event_category': 'Privacy',
             'event_label': 'Accepted',
@@ -904,13 +858,13 @@ function enableGoogleAnalytics() {
 // Desabilitar Google Analytics
 function disableGoogleAnalytics() {
     console.log('Google Analytics desabilitado');
-    
+
     // Se gtag estiver disponível, desabilitar
     if (typeof gtag !== 'undefined') {
         gtag('consent', 'update', {
             'analytics_storage': 'denied'
         });
-        
+
         gtag('event', 'cookie_consent', {
             'event_category': 'Privacy',
             'event_label': 'Declined',
@@ -936,18 +890,18 @@ function isCookieConsentExpired() {
     try {
         const consentDate = localStorage.getItem('fjcalculos_cookie_date');
         const consentType = localStorage.getItem('fjcalculos_cookie_type');
-        
+
         if (!consentDate || !consentType) return true;
-        
+
         const consentTime = new Date(consentDate).getTime();
         const currentTime = new Date().getTime();
-        
+
         // Se foi recusado, expira em 1 hora (60 minutos)
         if (consentType === 'declined') {
             const oneHour = 60 * 60 * 1000; // 1 hora em millisegundos
             return (currentTime - consentTime) > oneHour;
         }
-        
+
         // Se foi aceito, expira em 365 dias
         const oneYear = 365 * 24 * 60 * 60 * 1000; // 365 dias em millisegundos
         return (currentTime - consentTime) > oneYear;
@@ -989,16 +943,17 @@ function initWhatsAppIntegration() {
 // Inicializar botões CTA
 function initCTAButtons() {
     // Adicionar evento aos botões CTA
-    const ctaButtons = document.querySelectorAll('[data-cta]');    ctaButtons.forEach(button => {
+    const ctaButtons = document.querySelectorAll('[data-cta]'); ctaButtons.forEach(button => {
         button.addEventListener('click', function (event) {
             event.preventDefault(); // Prevenir comportamento padrão
-            const ctaType = this.getAttribute('data-cta');switch (ctaType) {
+            const ctaType = this.getAttribute('data-cta');
+            switch (ctaType) {
                 case 'quote':
                     // Abrir WhatsApp com mensagem de orçamento
                     const phoneNumber = '553398337624';
                     const quoteMessage = 'Olá! Gostaria de solicitar um orçamento personalizado para cálculos judiciais. Poderia me enviar mais informações sobre os serviços e valores?';
                     const whatsappUrl = getWhatsAppUrl(phoneNumber, quoteMessage);
-                    
+
                     if (whatsappUrl) {
                         if (isMobileDevice()) {
                             // Para mobile: tentar app primeiro
@@ -1007,7 +962,7 @@ function initCTAButtons() {
                             // Para desktop: abrir em nova aba
                             window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
                         }
-                        
+
                         // Analytics tracking
                         if (typeof gtag !== 'undefined') {
                             gtag('event', 'click', {
@@ -1026,7 +981,7 @@ function initCTAButtons() {
                             if (nomeField) nomeField.focus();
                         }, 500);
                     }
-                    break;                case 'services':
+                    break; case 'services':
                     // Rolar para a seção de serviços
                     document.getElementById('servicos').scrollIntoView({
                         behavior: 'smooth',
@@ -1049,10 +1004,10 @@ function initServiceButtons() {
         button.addEventListener('click', function (event) {
             event.preventDefault(); // Prevenir comportamento padrão
             const serviceType = this.getAttribute('data-service');
-            
+
             const phoneNumber = '553398337624';
             let serviceMessage = '';
-            
+
             // Definir mensagem específica para cada serviço
             switch (serviceType) {
                 case 'liquidacao-sentenca':
@@ -1070,9 +1025,9 @@ function initServiceButtons() {
                 default:
                     serviceMessage = 'Olá! Gostaria de saber mais informações sobre os serviços de cálculos judiciais trabalhistas.';
             }
-            
+
             const whatsappUrl = getWhatsAppUrl(phoneNumber, serviceMessage);
-            
+
             if (whatsappUrl) {
                 if (isMobileDevice()) {
                     // Para mobile: tentar app primeiro
@@ -1081,7 +1036,7 @@ function initServiceButtons() {
                     // Para desktop: abrir em nova aba
                     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
                 }
-                
+
                 // Analytics tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'click', {
@@ -1090,7 +1045,7 @@ function initServiceButtons() {
                     });
                 }
             }
-            
+
             // Tracking de eventos (analytics)
             console.log('Service button clicked:', serviceType);
         });
@@ -1100,8 +1055,9 @@ function initServiceButtons() {
 // Adicionar efeitos visuais extras para cards de serviços clicáveis
 function enhanceServiceCards() {
     const serviceCards = document.querySelectorAll('[data-service]');
-    
-    serviceCards.forEach(card => {        // Adicionar classe CSS para efeitos visuais
+
+    serviceCards.forEach(card => {
+        // Adicionar classe CSS para efeitos visuais
         card.classList.add('service-card-clickable');
     });
 }
@@ -1174,17 +1130,65 @@ function initFormspreeIntegration() {
     }
 }
 
-// Adicionar efeitos visuais extras para cards de serviços clicáveis
-function enhanceServiceCards() {
-    const serviceCards = document.querySelectorAll('[data-service]');
-    
-    serviceCards.forEach(card => {
-        // Adicionar classe CSS para efeitos visuais
-        card.classList.add('service-card-clickable');
+// Função para aplicar máscara de telefone
+function applyPhoneMask(input) {
+    if (!input) return;
+
+    input.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Removes tudo que não é dígito
+
+        // Limita a 11 dígitos (celular) ou 10 dígitos (fixo)
+        if (value.length > 11) {
+            value = value.substring(0, 11);
+        }
+
+        // Aplica a formatação
+        let formattedValue = '';
+
+        if (value.length > 0) {
+            formattedValue = '(' + value.substring(0, 2);
+
+            if (value.length > 2) {
+                formattedValue += ') ';
+
+                if (value.length <= 6) {
+                    // Para números com 10 dígitos (fixo): (00) 0000-0000
+                    formattedValue += value.substring(2);
+                } else if (value.length <= 10) {
+                    // Para números com 10 dígitos (fixo): (00) 0000-0000
+                    formattedValue += value.substring(2, 6) + '-' + value.substring(6);
+                } else {
+                    // Para números com 11 dígitos (celular): (00) 00000-0000
+                    formattedValue += value.substring(2, 7) + '-' + value.substring(7);
+                }
+            }
+        }
+
+        e.target.value = formattedValue;
+    });
+
+    // Permitir apenas números, backspace, delete e setas
+    input.addEventListener('keydown', function (e) {
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+        const isNumber = (e.key >= '0' && e.key <= '9');
+
+        if (!allowedKeys.includes(e.key) && !isNumber) {
+            e.preventDefault();
+        }
+    });
+
+    // Limpar formatação ao colar texto
+    input.addEventListener('paste', function (e) {
+        setTimeout(() => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+
+            // Reaplica a formatação
+            const event = new Event('input', { bubbles: true });
+            e.target.value = value;
+            e.target.dispatchEvent(event);
+        }, 0);
     });
 }
-
-// Chamar função de melhoria de cards após a inicialização
-document.addEventListener('DOMContentLoaded', function () {
-    enhanceServiceCards();
-});
