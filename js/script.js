@@ -1,8 +1,6 @@
 // Aguardar carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('JP Cálculos - Landing Page carregada');
-
-    // Inicializar funcionalidades
+    console.log('JP Cálculos - Landing Page carregada');    // Inicializar funcionalidades
     initMobileMenu();
     initScrollEffects();
     initSmoothScrolling();
@@ -10,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
     initPerformanceOptimizations();
     initWhatsAppIntegration();
     initCTAButtons();
+    initServiceButtons();
+    enhanceServiceCards();
     initFormspreeIntegration();
     initCookieBanner();
 
@@ -1041,6 +1041,71 @@ function initCTAButtons() {
     });
 }
 
+// Inicializar botões de serviços
+function initServiceButtons() {
+    // Adicionar evento aos botões de serviços
+    const serviceButtons = document.querySelectorAll('[data-service]');
+    serviceButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevenir comportamento padrão
+            const serviceType = this.getAttribute('data-service');
+            
+            const phoneNumber = '553398337624';
+            let serviceMessage = '';
+            
+            // Definir mensagem específica para cada serviço
+            switch (serviceType) {
+                case 'liquidacao-sentenca':
+                    serviceMessage = 'Olá! Gostaria de saber mais sobre o serviço de Liquidação de Sentença. Preciso de uma apuração precisa dos valores devidos com base na decisão judicial. Poderia me enviar informações sobre prazo e valor?';
+                    break;
+                case 'liquidacao-inicial':
+                    serviceMessage = 'Olá! Tenho interesse no serviço de Liquidação da Petição Inicial. Preciso de um cálculo detalhado baseado nos pedidos da inicial para assegurar o valor correto da causa. Poderia me enviar informações?';
+                    break;
+                case 'calculos-contingencia':
+                    serviceMessage = 'Olá! Gostaria de consultar sobre Cálculos de Contingência. Preciso de uma estimativa técnica do valor da ação e dos riscos para provisionamento. Poderia me auxiliar com informações sobre este serviço?';
+                    break;
+                case 'impugnacao-calculos':
+                    serviceMessage = 'Olá! Preciso de auxílio com Impugnação de Cálculos. Gostaria de uma análise técnica e contestação fundamentada dos cálculos apresentados pela parte contrária. Poderia me enviar informações sobre este serviço?';
+                    break;
+                default:
+                    serviceMessage = 'Olá! Gostaria de saber mais informações sobre os serviços de cálculos judiciais trabalhistas.';
+            }
+            
+            const whatsappUrl = getWhatsAppUrl(phoneNumber, serviceMessage);
+            
+            if (whatsappUrl) {
+                if (isMobileDevice()) {
+                    // Para mobile: tentar app primeiro
+                    window.location.href = whatsappUrl;
+                } else {
+                    // Para desktop: abrir em nova aba
+                    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                }
+                
+                // Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'click', {
+                        event_category: 'WhatsApp',
+                        event_label: `Service Button - ${serviceType}`
+                    });
+                }
+            }
+            
+            // Tracking de eventos (analytics)
+            console.log('Service button clicked:', serviceType);
+        });
+    });
+}
+
+// Adicionar efeitos visuais extras para cards de serviços clicáveis
+function enhanceServiceCards() {
+    const serviceCards = document.querySelectorAll('[data-service]');
+    
+    serviceCards.forEach(card => {        // Adicionar classe CSS para efeitos visuais
+        card.classList.add('service-card-clickable');
+    });
+}
+
 // Integração com Formspree
 function initFormspreeIntegration() {
     const form = document.getElementById('form-contato');
@@ -1108,3 +1173,18 @@ function initFormspreeIntegration() {
         form.addEventListener("submit", handleSubmit);
     }
 }
+
+// Adicionar efeitos visuais extras para cards de serviços clicáveis
+function enhanceServiceCards() {
+    const serviceCards = document.querySelectorAll('[data-service]');
+    
+    serviceCards.forEach(card => {
+        // Adicionar classe CSS para efeitos visuais
+        card.classList.add('service-card-clickable');
+    });
+}
+
+// Chamar função de melhoria de cards após a inicialização
+document.addEventListener('DOMContentLoaded', function () {
+    enhanceServiceCards();
+});
