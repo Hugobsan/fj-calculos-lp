@@ -981,12 +981,21 @@ function initCTAButtons() {
                             if (nomeField) nomeField.focus();
                         }, 500);
                     }
-                    break; case 'services':
-                    // Rolar para a seção de serviços
-                    document.getElementById('servicos').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    break;                case 'services':
+                    // Rolar para a seção da metodologia ADPRE
+                    const metodologiaSection = document.querySelector('.py-24.bg-gradient-to-br.from-primary');
+                    if (metodologiaSection) {
+                        metodologiaSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        // Fallback: rolar para a seção de serviços se não encontrar a metodologia
+                        document.getElementById('servicos').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                     break;
             }
 
