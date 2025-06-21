@@ -757,3 +757,175 @@ img {
 .social-icon:hover {
   transform: scale(1.1);
 }
+
+/* Estilos específicos para a seção Metodologia ADPRE */
+.metodologia-adpre {
+  position: relative;
+}
+
+/* Animação de pulsação suave para elementos de destaque */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(38, 148, 167, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(38, 148, 167, 0.6);
+  }
+}
+
+/* Animação para os cards da metodologia */
+.metodologia-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metodologia-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.metodologia-card .card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 1024px) {
+  .metodologia-card {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .metodologia-card {
+    min-height: 350px;
+  }
+}
+
+/* Efeito de brilho para os ícones das letras */
+.metodologia-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.metodologia-icon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.8s ease;
+}
+
+.metodologia-card:hover .metodologia-icon::before {
+  transform: translateX(100%);
+}
+
+/* Melhor contraste para acessibilidade */
+.text-high-contrast {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Indicadores de progresso animados */
+.progress-bar {
+  animation: fill-progress 2s ease-in-out;
+}
+
+@keyframes fill-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--progress-width, 100%);
+  }
+}
+
+/* Responsividade para a linha conectora */
+@media (max-width: 1024px) {
+  .metodologia-connector {
+    display: none;
+  }
+}
+
+/* Efeitos de hover melhorados para o CTA */
+.cta-button-enhanced {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Melhorias de acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  .metodologia-card,
+  .metodologia-icon::before,
+  .progress-bar {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Focus states melhorados */
+.metodologia-card:focus,
+button:focus {
+  outline: 3px solid var(--color-blue-light);
+  outline-offset: 2px;
+}
+
+/* Contraste melhorado para textos sobre fundos escuros */
+.dark-section {
+  background: linear-gradient(135deg, #2c2e3d 0%, #1a1b25 50%, #2c2e3d 100%);
+}
+
+.dark-section .text-enhanced {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.dark-section .text-secondary-enhanced {
+  color: #e2e8f0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Efeitos visuais para os elementos decorativos */
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating-element:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.floating-element:nth-child(3) {
+  animation-delay: 4s;
+}
