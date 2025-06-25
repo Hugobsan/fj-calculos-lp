@@ -1,6 +1,15 @@
 // Aguardar carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('JP Cálculos - Landing Page carregada');    // Inicializar funcionalidades
+    console.log('JP Cálculos - Landing Page carregada');
+    
+    // TRACKING GOOGLE ADS - EVENTOS OTIMIZADOS
+    // Os eventos foram configurados para serem automaticamente reconhecidos pelo Google Ads:
+    // - generate_lead: Para conversões de leads (WhatsApp + Formulário)
+    // - contact: Para contatos via WhatsApp
+    // - submit_form: Para envios de formulário
+    // - view_item: Para navegação para serviços
+    
+    // Inicializar funcionalidades
     initMobileMenu();
     initScrollEffects();
     initSmoothScrolling();
@@ -511,9 +520,20 @@ function handleWhatsAppClick(e) {
 
     // Analytics tracking (se necessário)
     if (typeof gtag !== 'undefined') {
-        gtag('event', 'click', {
-            event_category: 'WhatsApp',
-            event_label: 'Floating Button'
+        // Evento padrão GA4 para contato via WhatsApp
+        gtag('event', 'generate_lead', {
+            currency: 'BRL',
+            value: 1,
+            method: 'whatsapp_float',
+            source: 'floating_button',
+            campaign: 'contact_request'
+        });
+        
+        gtag('event', 'contact', {
+            method: 'whatsapp',
+            event_category: 'Lead Generation',
+            event_label: 'Floating WhatsApp Button',
+            content_group: 'Float'
         });
     }
 }
@@ -963,11 +983,23 @@ function initCTAButtons() {
                             window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
                         }
 
-                        // Analytics tracking
+                        // Tracking otimizado para Google Ads
                         if (typeof gtag !== 'undefined') {
-                            gtag('event', 'click', {
-                                event_category: 'WhatsApp',
-                                event_label: 'CTA Quote Button'
+                            // Evento padrão GA4 para geração de leads (reconhecido automaticamente pelo Google Ads)
+                            gtag('event', 'generate_lead', {
+                                currency: 'BRL',
+                                value: 1,
+                                method: 'whatsapp_cta',
+                                source: 'website_button',
+                                campaign: 'quote_request'
+                            });
+                            
+                            // Evento adicional para WhatsApp (para Analytics)
+                            gtag('event', 'contact', {
+                                method: 'whatsapp',
+                                event_category: 'Lead Generation',
+                                event_label: 'Quote Request Button',
+                                content_group: 'CTA'
                             });
                         }
                     } else {
@@ -994,6 +1026,16 @@ function initCTAButtons() {
                         document.getElementById('servicos').scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
+                        });
+                    }
+
+                    // Tracking otimizado para Google Ads
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'view_item', {
+                            item_category: 'Services',
+                            item_name: 'Metodologia ADPRE',
+                            event_category: 'Engagement',
+                            event_label: 'Services Navigation Button'
                         });
                     }
                     break;
@@ -1109,6 +1151,24 @@ function initFormspreeIntegration() {
 
                 // Usar função de notificação
                 showNotification('Mensagem enviada com sucesso! Entraremos em contato em breve.', 'success');
+
+                // Tracking otimizado para Google Ads - Formulário enviado com sucesso
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'generate_lead', {
+                        currency: 'BRL',
+                        value: 2, // Valor maior para formulário (mais qualificado)
+                        method: 'contact_form',
+                        source: 'website_form',
+                        campaign: 'form_submission'
+                    });
+                    
+                    gtag('event', 'submit_form', {
+                        form_id: 'form-contato',
+                        event_category: 'Lead Generation',
+                        event_label: 'Contact Form Submission',
+                        content_group: 'Form'
+                    });
+                }
             } else {
                 // Erro do Formspree, usar fallback
                 throw new Error("Formspree error");
