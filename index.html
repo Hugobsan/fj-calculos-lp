@@ -346,75 +346,110 @@
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Service Card 1 - Liquidação de Sentença -->
-          <a
-            href="#"
-            class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-left cursor-pointer block hover:shadow-xl transition-all duration-300"
+          <div class="service-card-clickable bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-left cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 group flex flex-col h-full"
+            onclick="handleServiceClick('liquidacao-sentenca')"
             data-service="liquidacao-sentenca"
           >
             <div
-              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
+              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
             >
               <span class="material-icons text-white text-2xl">gavel</span>
             </div>
-            <h3 class="text-xl font-bold text-primary mb-4">Liquidação de Sentença</h3>
-            <p class="text-gray-600 leading-relaxed mb-4">
+            <h3 class="text-xl font-bold text-primary mb-4 group-hover:text-blue-light transition-colors duration-300">Liquidação de Sentença</h3>
+            <p class="text-gray-600 leading-relaxed mb-4 flex-grow">
               Apuração precisa dos valores devidos com base na análise das decisões judiciais.
             </p>
-            <p class="text-sm text-blue-light font-semibold">Garante segurança e agilidade na fase de liquidação</p>
-          </a>
+            <p class="text-sm text-blue-light font-semibold mb-6">Garante segurança e agilidade na fase de liquidação</p>
+            
+            <!-- Botão CTA -->
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-xs text-gray-500 uppercase tracking-wide">Clique para saber mais</span>
+              <div class="bg-blue-light text-white px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-blue-dark transition-all duration-300 flex items-center">
+                <span>Solicitar</span>
+                <span class="material-icons ml-1 text-base group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+          
           <!-- Service Card 2 - Liquidação da Petição Inicial -->
-          <a
-            href="#"
-            class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-on-scroll cursor-pointer block hover:shadow-xl transition-all duration-300"
+          <div class="service-card-clickable bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-on-scroll cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 group flex flex-col h-full"
+            onclick="handleServiceClick('liquidacao-inicial')"
             data-service="liquidacao-inicial"
           >
             <div
-              class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
+              class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
             >
               <span class="material-icons text-white text-2xl">description</span>
             </div>
-            <h3 class="text-xl font-bold text-primary mb-4">Liquidação da Petição Inicial</h3>
-            <p class="text-gray-600 leading-relaxed mb-4">
+            <h3 class="text-xl font-bold text-primary mb-4 group-hover:text-orange-dark transition-colors duration-300">Liquidação da Petição Inicial</h3>
+            <p class="text-gray-600 leading-relaxed mb-4 flex-grow">
               Cálculo detalhado com base nos pedidos da inicial, assegurando o valor correto da causa e da condenação.
             </p>
-            <p class="text-sm text-orange-dark font-semibold">Comece sua ação com base sólida</p>
-          </a>
+            <p class="text-sm text-orange-dark font-semibold mb-6">Comece sua ação com base sólida</p>
+            
+            <!-- Botão CTA -->
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-xs text-gray-500 uppercase tracking-wide">Clique para saber mais</span>
+              <div class="bg-orange-light text-white px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-orange-dark transition-all duration-300 flex items-center">
+                <span>Solicitar</span>
+                <span class="material-icons ml-1 text-base group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+          
           <!-- Service Card 3 - Cálculos de Contingência -->
-          <a
-            href="#"
-            class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-on-scroll cursor-pointer block hover:shadow-xl transition-all duration-300"
+          <div class="service-card-clickable bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-on-scroll cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 group flex flex-col h-full"
+            onclick="handleServiceClick('calculos-contingencia')"
             data-service="calculos-contingencia"
           >
             <div
-              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
+              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
             >
               <span class="material-icons text-white text-2xl">trending_up</span>
             </div>
-            <h3 class="text-xl font-bold text-primary mb-4">Cálculos de Contingência</h3>
-            <p class="text-gray-600 leading-relaxed mb-4">
+            <h3 class="text-xl font-bold text-primary mb-4 group-hover:text-blue-light transition-colors duration-300">Cálculos de Contingência</h3>
+            <p class="text-gray-600 leading-relaxed mb-4 flex-grow">
               Estimativa técnica do valor da ação e dos riscos envolvidos para provisionamento.
             </p>
-            <p class="text-sm text-blue-light font-semibold">Tome decisões estratégicas com dados confiáveis</p>
-          </a>
+            <p class="text-sm text-blue-light font-semibold mb-6">Tome decisões estratégicas com dados confiáveis</p>
+            
+            <!-- Botão CTA -->
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-xs text-gray-500 uppercase tracking-wide">Clique para saber mais</span>
+              <div class="bg-blue-light text-white px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-blue-dark transition-all duration-300 flex items-center">
+                <span>Solicitar</span>
+                <span class="material-icons ml-1 text-base group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+          
           <!-- Service Card 4 - Impugnação de Cálculos -->
-          <a
-            href="#"
-            class="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-right cursor-pointer block hover:shadow-xl transition-all duration-300"
+          <div class="service-card-clickable bg-white p-8 rounded-2xl shadow-lg border border-gray-100 animate-right cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 group flex flex-col h-full"
+            onclick="handleServiceClick('impugnacao-calculos')"
             data-service="impugnacao-calculos"
           >
             <div
-              class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6"
+              class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
             >
               <span class="material-icons text-white text-2xl">fact_check</span>
             </div>
-            <h3 class="text-xl font-bold text-primary mb-4">Impugnação de Cálculos</h3>
-            <p class="text-gray-600 leading-relaxed mb-4">
+            <h3 class="text-xl font-bold text-primary mb-4 group-hover:text-orange-dark transition-colors duration-300">Impugnação de Cálculos</h3>
+            <p class="text-gray-600 leading-relaxed mb-4 flex-grow">
               Análise técnica e contestação fundamentada dos cálculos apresentados pela parte contrária ou perito.
             </p>
-            <p class="text-sm text-orange-dark font-semibold">
+            <p class="text-sm text-orange-dark font-semibold mb-6">
               Evite custos desnecessários ou valores inferiores ao devido
             </p>
-          </a>
+            
+            <!-- Botão CTA -->
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-xs text-gray-500 uppercase tracking-wide">Clique para saber mais</span>
+              <div class="bg-orange-light text-white px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-orange-dark transition-all duration-300 flex items-center">
+                <span>Solicitar</span>
+                <span class="material-icons ml-1 text-base group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Seção de público-alvo e benefícios -->

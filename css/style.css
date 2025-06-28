@@ -340,19 +340,124 @@ body {
 /* Estilos para cards de serviços clicáveis */
 .service-card-clickable {
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid transparent;
 }
 
 .service-card-clickable:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(38, 148, 167, 0.1);
+  border-color: rgba(38, 148, 167, 0.2);
 }
 
 .service-card-clickable:active {
-  transform: translateY(-6px) scale(0.98);
+  transform: translateY(-8px) scale(1.01);
   transition: transform 0.1s ease;
+}
+
+/* Efeito de brilho sutil ao hover - melhorado */
+.service-card-clickable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(38, 148, 167, 0.15), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
+}
+
+.service-card-clickable:hover::before {
+  left: 100%;
+}
+
+/* Efeito de pulso no ícone */
+.service-card-clickable:hover .bg-gradient-to-r {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* Garantir que o conteúdo fique acima do efeito */
+.service-card-clickable > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Estilo especial para o botão CTA dentro do card */
+.service-card-clickable .bg-blue-light,
+.service-card-clickable .bg-orange-light {
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.service-card-clickable:hover .bg-blue-light {
+  background: linear-gradient(135deg, #297374, #1e6b6e);
+  box-shadow: 0 6px 20px rgba(38, 148, 167, 0.4);
+}
+
+.service-card-clickable:hover .bg-orange-light {
+  background: linear-gradient(135deg, #f58336, #e6762e);
+  box-shadow: 0 6px 20px rgba(245, 131, 54, 0.4);
+}
+
+/* Efeito de destaque no texto "Clique para saber mais" */
+.service-card-clickable:hover .text-gray-500 {
+  color: #6b7280;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+/* Melhorar a responsividade em dispositivos móveis */
+@media (max-width: 768px) {
+  .service-card-clickable {
+    min-height: 380px;
+  }
+  
+  .service-card-clickable:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+  
+  .service-card-clickable:active {
+    transform: translateY(-4px) scale(0.99);
+  }
+}
+
+/* Para dispositivos que não suportam hover */
+@media (hover: none) {
+  .service-card-clickable:hover {
+    transform: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .service-card-clickable:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Animação de pulso melhorada para ícones */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(38, 148, 167, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(38, 148, 167, 0);
+    transform: scale(1.05);
+  }
+}
+
+/* Efeito especial para o card ao ser focado via teclado */
+.service-card-clickable:focus {
+  outline: 3px solid #2694a7;
+  outline-offset: 2px;
+  transform: translateY(-4px);
 }
 
 /* Efeito de brilho sutil ao hover */
