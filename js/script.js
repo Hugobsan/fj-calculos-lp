@@ -465,6 +465,108 @@ function initWhatsAppButton() {
         // Garantir que o link seja configurado imediatamente
         customizeWhatsAppLink();
 
+    } else {
+        console.error('Botão WhatsApp não encontrado!');
+    }
+}
+
+// Função separada para lidar com o clique do WhatsApp
+function handleWhatsAppClick(e) {
+    e.preventDefault(); // Prevenir comportamento padrão
+
+    console.log('Clique no WhatsApp detectado!');
+
+    const phoneNumber = '553398337624';
+    const message = encodeURIComponent('Olá! Gostaria de solicitar um orçamento para cálculos judiciais.');
+
+    console.log('Dispositivo móvel:', isMobileDevice());
+
+    if (isMobileDevice()) {
+        // Para mobile: tentar app primeiro, depois fallback para wa.me
+        const whatsappAppUrl = `whatsapp://send?phone=${phoneNumber}&text=${message}`;
+        const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+        console.log('Tentando abrir app WhatsApp:', whatsappAppUrl);
+
+        // Método mais confiável: tentar window.location primeiro
+        window.location.href = whatsappAppUrl;
+
+        // Fallback para wa.me se o app não abrir
+        const fallbackTimer = setTimeout(() => {
+            console.log('App não abriu, usando fallback wa.me:', waUrl);
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }, 2000);
+
+        // Se a página perder o foco (app abriu), cancelar o fallback
+        const blurHandler = () => {
+            console.log('Página perdeu foco, app provavelmente abriu');
+            clearTimeout(fallbackTimer);
+            window.removeEventListener('blur', blurHandler);
+            window.removeEventListener('visibilitychange', visibilityHandler);
+        };
+
+        const visibilityHandler = () => {
+            if (document.hidden) {
+                console.log('Página ficou invisível, app provavelmente abriu');
+                clearTimeout(fallbackTimer);
+                window.removeEventListener('blur', blurHandler);
+                window.removeEventListener('visibilitychange', visibilityHandler);
+            }
+        };
+
+        window.addEventListener('blur', blurHandler);
+        window.addEventListener('visibilitychange', visibilityHandler);
+
+        // Limpar após 3 segundos independentemente
+        setTimeout(() => {
+            clearTimeout(fallbackTimer);
+            window.removeEventListener('blur', blurHandler);
+            window.removeEventListener('visibilitychange', visibilityHandler);
+        }, 3000);
+
+    } else {
+        // Para desktop: usar wa.me diretamente
+        const waUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+        console.log('Abrindo wa.me para desktop:', waUrl);
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
+    }
+
+    // Analytics tracking (se necessário)
+    if (typeof gtag !== 'undefined') {
+        // Evento padrão GA4 para contato via WhatsApp
+        gtag('event', 'generate_lead', {
+            currency: 'BRL',
+            value: 1,
+            method: 'whatsapp_float',
+            source: 'floating_button',
+            campaign: 'contact_request'
+        });
+        
+        gtag('event', 'contact', {
+            method: 'whatsapp',
+            event_category: 'Lead Generation',
+            event_label: 'Floating WhatsApp Button',
+            content_group: 'Float'
+        });
+    }
+}
+
+// Funcionalidades do botão flutuante do WhatsApp
+function initWhatsAppButton() {
+    const whatsappButton = document.querySelector('.whatsapp-button');
+
+    if (whatsappButton) {
+        console.log('Botão WhatsApp encontrado, inicializando...');
+
+        // Remover qualquer evento anterior
+        whatsappButton.removeEventListener('click', handleWhatsAppClick);
+
+        // Adicionar evento de clique com tracking
+        whatsappButton.addEventListener('click', handleWhatsAppClick);
+
+        // Garantir que o link seja configurado imediatamente
+        customizeWhatsAppLink();
+
         // Mostrar/esconder baseado no scroll
         let lastScrollTop = 0;
         const scrollThreshold = 100;
@@ -1105,70 +1207,4 @@ function applyPhoneMask(input) {
             e.target.dispatchEvent(event);
         }, 0);
     });
-}
-
-// Função para lidar com cliques nos cards de serviços
-function handleServiceClick(serviceType) {
-    // Feedback visual imediato
-    const clickedCard = document.querySelector(`[data-service="${serviceType}"]`);
-    if (clickedCard) {
-        clickedCard.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-            clickedCard.style.transform = '';
-        }, 150);
-    }
-
-    // Track do evento para Analytics
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'service_click', {
-            event_category: 'services',
-            event_label: serviceType,
-            value: 1
-        });
-    }
-
-    // Preparar mensagem personalizada para WhatsApp baseada no serviço
-    let message = '';
-    let serviceName = '';
-    
-    switch(serviceType) {
-        case 'liquidacao-sentenca':
-            serviceName = 'Liquidação de Sentença';
-            message = `Olá! Gostaria de solicitar um orçamento para *${serviceName}*. Preciso de uma apuração precisa dos valores devidos com base na análise das decisões judiciais.`;
-            break;
-        case 'liquidacao-inicial':
-            serviceName = 'Liquidação da Petição Inicial';
-            message = `Olá! Tenho interesse no serviço de *${serviceName}*. Preciso de um cálculo detalhado com base nos pedidos da inicial para assegurar o valor correto da causa.`;
-            break;
-        case 'calculos-contingencia':
-            serviceName = 'Cálculos de Contingência';
-            message = `Olá! Gostaria de solicitar *${serviceName}*. Preciso de uma estimativa técnica do valor da ação e dos riscos envolvidos para provisionamento.`;
-            break;
-        case 'impugnacao-calculos':
-            serviceName = 'Impugnação de Cálculos';
-            message = `Olá! Preciso do serviço de *${serviceName}*. Tenho cálculos que precisam de análise técnica e contestação fundamentada.`;
-            break;
-        default:
-            serviceName = 'Serviços de Cálculos Judiciais';
-            message = `Olá! Gostaria de saber mais sobre os serviços de cálculos judiciais e solicitar um orçamento.`;
-    }
-
-    // Adicionar informações adicionais padrão
-    message += `\n\nPode me enviar mais informações sobre o processo e valores?`;
-
-    // Abrir WhatsApp com mensagem personalizada
-    const phoneNumber = '5533998337624'; // Número do WhatsApp
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    
-    // Abrir em nova aba
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-
-    // Track de conversão para Google Ads
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'generate_lead', {
-            event_category: 'engagement',
-            event_label: `service_${serviceType}`,
-            value: 1
-        });
-    }
 }
