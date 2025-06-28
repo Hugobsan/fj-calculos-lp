@@ -126,23 +126,36 @@ function initScrollEffects() {
 
 // Scroll suave para links de navegação
 function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('a[href^="#"]');
+    // Selecionar apenas links de navegação que são âncoras internas válidas
+    const navLinks = document.querySelectorAll('a[href^="#"]:not([data-cta]):not([data-service])');
 
     navLinks.forEach(link => {
         link.addEventListener('click', function (e) {
-            e.preventDefault();
-
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            
+            // Apenas processar se for uma âncora interna válida
+            if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                e.preventDefault();
+                
+                const targetElement = document.querySelector(targetId);
 
-            if (targetElement) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = targetElement.offsetTop - headerHeight;
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Fechar menu mobile se estiver aberto
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        const menuIcon = document.querySelector('#mobile-menu-button .material-icons');
+                        if (menuIcon) menuIcon.textContent = 'menu';
+                    }
+                }
             }
         });
     });
@@ -737,11 +750,29 @@ function getWhatsAppUrl(phoneNumber, customMessage = '') {
     }
 }
 
+// Função para pegar URLs do WhatsApp baseadas em chaves/tipos de CTA
+function getWhatsAppUrlByKey(keyName) {
+    const phoneNumber = '553398337624';
+    const messageTemplates = {
+        'quote': 'Olá! Gostaria de solicitar um orçamento personalizado para cálculos judiciais. Poderia me enviar mais informações sobre os serviços e valores?',
+        'services': 'Olá! Gostaria de conhecer mais sobre a metodologia ADPRE e os serviços especializados em cálculos trabalhistas.',
+        'liquidacao-sentenca': 'Olá! Gostaria de saber mais sobre o serviço de Liquidação de Sentença. Preciso de uma apuração precisa dos valores devidos com base na decisão judicial. Poderia me enviar informações sobre prazo e valor?',
+        'liquidacao-inicial': 'Olá! Tenho interesse no serviço de Liquidação da Petição Inicial. Preciso de um cálculo detalhado baseado nos pedidos da inicial para assegurar o valor correto da causa. Poderia me enviar informações?',
+        'calculos-contingencia': 'Olá! Gostaria de consultar sobre Cálculos de Contingência. Preciso de uma estimativa técnica do valor da ação e dos riscos para provisionamento. Poderia me auxiliar com informações sobre este serviço?',
+        'impugnacao-calculos': 'Olá! Preciso de auxílio com Impugnação de Cálculos. Gostaria de uma análise técnica e contestação fundamentada dos cálculos apresentados pela parte contrária. Poderia me enviar informações sobre este serviço?',
+        'default': 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.'
+    };
+
+    const message = messageTemplates[keyName] || messageTemplates['default'];
+    return getWhatsAppUrl(phoneNumber, message);
+}
+
 // Exportar funções para uso global se necessário
 window.WhatsAppUtils = {
     updateNumber: updateWhatsAppNumber,
     isMobile: isMobileDevice,
-    getUrl: getWhatsAppUrl
+    getUrl: getWhatsAppUrl,
+    getUrlByKey: getWhatsAppUrlByKey
 };
 
 // ========= FUNÇÕES DE GERENCIAMENTO DE COOKIES =========
@@ -961,145 +992,61 @@ function initWhatsAppIntegration() {
 }
 
 // Inicializar botões CTA
+// Inicializar botões CTA
 function initCTAButtons() {
-    // Adicionar evento aos botões CTA
-    const ctaButtons = document.querySelectorAll('[data-cta]'); ctaButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevenir comportamento padrão
-            const ctaType = this.getAttribute('data-cta');
-            switch (ctaType) {
-                case 'quote':
-                    // Abrir WhatsApp com mensagem de orçamento
-                    const phoneNumber = '553398337624';
-                    const quoteMessage = 'Olá! Gostaria de solicitar um orçamento personalizado para cálculos judiciais. Poderia me enviar mais informações sobre os serviços e valores?';
-                    const whatsappUrl = getWhatsAppUrl(phoneNumber, quoteMessage);
-
-                    if (whatsappUrl) {
-                        if (isMobileDevice()) {
-                            // Para mobile: tentar app primeiro
-                            window.location.href = whatsappUrl;
-                        } else {
-                            // Para desktop: abrir em nova aba
-                            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-                        }
-
-                        // Tracking otimizado para Google Ads
-                        if (typeof gtag !== 'undefined') {
-                            // Evento padrão GA4 para geração de leads (reconhecido automaticamente pelo Google Ads)
-                            gtag('event', 'generate_lead', {
-                                currency: 'BRL',
-                                value: 1,
-                                method: 'whatsapp_cta',
-                                source: 'website_button',
-                                campaign: 'quote_request'
-                            });
-                            
-                            // Evento adicional para WhatsApp (para Analytics)
-                            gtag('event', 'contact', {
-                                method: 'whatsapp',
-                                event_category: 'Lead Generation',
-                                event_label: 'Quote Request Button',
-                                content_group: 'CTA'
-                            });
-                        }
-                    } else {
-                        // Fallback: rolar para o formulário de contato
-                        document.getElementById('contato').scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                        setTimeout(() => {
-                            const nomeField = document.querySelector('input[name="nome"]');
-                            if (nomeField) nomeField.focus();
-                        }, 500);
-                    }
-                    break;                case 'services':
-                    // Rolar para a seção da metodologia ADPRE
-                    const metodologiaSection = document.querySelector('.py-24.bg-gradient-to-br.from-primary');
-                    if (metodologiaSection) {
-                        metodologiaSection.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    } else {
-                        // Fallback: rolar para a seção de serviços se não encontrar a metodologia
-                        document.getElementById('servicos').scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-
-                    // Tracking otimizado para Google Ads
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'view_item', {
-                            item_category: 'Services',
-                            item_name: 'Metodologia ADPRE',
-                            event_category: 'Engagement',
-                            event_label: 'Services Navigation Button'
-                        });
-                    }
-                    break;
+    // Configurar links CTA com mensagens personalizadas
+    const ctaLinks = document.querySelectorAll('[data-cta]');
+    
+    ctaLinks.forEach(link => {
+        const ctaType = link.getAttribute('data-cta');
+        
+        if (ctaType === 'services') {
+            // Para o botão "Saiba Mais", manter comportamento de scroll
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const metodologiaSection = document.querySelector('.py-24.bg-gradient-to-br.from-primary');
+                if (metodologiaSection) {
+                    metodologiaSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                } else {
+                    document.getElementById('servicos').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        } else {
+            // Para outros CTAs (como quote), configurar como links diretos do WhatsApp
+            const whatsappUrl = getWhatsAppUrlByKey(ctaType);
+            
+            if (whatsappUrl) {
+                link.href = whatsappUrl;
+                // Remover target="_blank" para abrir na mesma aba
+                // link.target = '_blank';
+                // link.rel = 'noopener noreferrer';
             }
-
-            // Tracking de eventos (analytics)
-            console.log('CTA clicked:', ctaType);
-        });
+        }
     });
 }
 
 // Inicializar botões de serviços
+// Inicializar botões de serviços
 function initServiceButtons() {
-    // Adicionar evento aos botões de serviços
-    const serviceButtons = document.querySelectorAll('[data-service]');
-    serviceButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevenir comportamento padrão
-            const serviceType = this.getAttribute('data-service');
-
-            const phoneNumber = '553398337624';
-            let serviceMessage = '';
-
-            // Definir mensagem específica para cada serviço
-            switch (serviceType) {
-                case 'liquidacao-sentenca':
-                    serviceMessage = 'Olá! Gostaria de saber mais sobre o serviço de Liquidação de Sentença. Preciso de uma apuração precisa dos valores devidos com base na decisão judicial. Poderia me enviar informações sobre prazo e valor?';
-                    break;
-                case 'liquidacao-inicial':
-                    serviceMessage = 'Olá! Tenho interesse no serviço de Liquidação da Petição Inicial. Preciso de um cálculo detalhado baseado nos pedidos da inicial para assegurar o valor correto da causa. Poderia me enviar informações?';
-                    break;
-                case 'calculos-contingencia':
-                    serviceMessage = 'Olá! Gostaria de consultar sobre Cálculos de Contingência. Preciso de uma estimativa técnica do valor da ação e dos riscos para provisionamento. Poderia me auxiliar com informações sobre este serviço?';
-                    break;
-                case 'impugnacao-calculos':
-                    serviceMessage = 'Olá! Preciso de auxílio com Impugnação de Cálculos. Gostaria de uma análise técnica e contestação fundamentada dos cálculos apresentados pela parte contrária. Poderia me enviar informações sobre este serviço?';
-                    break;
-                default:
-                    serviceMessage = 'Olá! Gostaria de saber mais informações sobre os serviços de cálculos judiciais trabalhistas.';
-            }
-
-            const whatsappUrl = getWhatsAppUrl(phoneNumber, serviceMessage);
-
-            if (whatsappUrl) {
-                if (isMobileDevice()) {
-                    // Para mobile: tentar app primeiro
-                    window.location.href = whatsappUrl;
-                } else {
-                    // Para desktop: abrir em nova aba
-                    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-                }
-
-                // Analytics tracking
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'click', {
-                        event_category: 'WhatsApp',
-                        event_label: `Service Button - ${serviceType}`
-                    });
-                }
-            }
-
-            // Tracking de eventos (analytics)
-            console.log('Service button clicked:', serviceType);
-        });
+    // Configurar links de serviços com mensagens específicas
+    const serviceLinks = document.querySelectorAll('[data-service]');
+    
+    serviceLinks.forEach(link => {
+        const serviceType = link.getAttribute('data-service');
+        const whatsappUrl = getWhatsAppUrlByKey(serviceType);
+        
+        if (whatsappUrl) {
+            link.href = whatsappUrl;
+            // Remover target="_blank" para abrir na mesma aba
+            // link.target = '_blank';
+            // link.rel = 'noopener noreferrer';
+        }
     });
 }
 
