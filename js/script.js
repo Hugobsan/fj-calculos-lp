@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     enhanceServiceCards();
     initFormspreeIntegration();
     initCookieBanner();
+    initHeroCarousel();
 
     // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
     const phoneInputs = document.querySelectorAll('input.phone-mask');
@@ -1208,3 +1209,207 @@ function applyPhoneMask(input) {
         }, 0);
     });
 }
+
+// ========= FUNCIONALIDADES DO CARROSSEL HERO =========
+
+// Inicializar carrossel do hero
+function initHeroCarousel() {
+    console.log('Inicializando carrossel do hero...');
+    
+    const carousel = document.getElementById('hero-carousel');
+    if (!carousel) {
+        console.warn('Carrossel hero não encontrado');
+        return;
+    }
+    
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const prevButton = document.getElementById('carousel-prev');
+    const nextButton = document.getElementById('carousel-next');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    let currentSlide = 0;
+    let autoPlayInterval;
+    const autoPlayDelay = 8000; // 8 segundos
+    
+    // Função para ir para um slide específico
+    function goToSlide(slideIndex) {
+        // Remover classes ativas
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active', 'prev');
+            if (index === slideIndex) {
+                slide.classList.add('active');
+            } else if (index < slideIndex) {
+                slide.classList.add('prev');
+            }
+        });
+        
+        // Atualizar indicadores
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === slideIndex);
+            indicator.classList.remove('auto-progress');
+        });
+        
+        currentSlide = slideIndex;
+        
+        // Adicionar animação de progresso no indicador ativo (apenas se auto-play estiver ativo)
+        if (autoPlayInterval && indicators[currentSlide]) {
+            indicators[currentSlide].classList.add('auto-progress');
+        }
+        
+        console.log(`Mudou para slide ${slideIndex + 1}`);
+    }
+    
+    // Função para ir para o próximo slide
+    function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        goToSlide(next);
+    }
+    
+    // Função para ir para o slide anterior
+    function prevSlide() {
+        const prev = (currentSlide - 1 + slides.length) % slides.length;
+        goToSlide(prev);
+    }
+    
+    // Função para iniciar auto-play
+    function startAutoPlay() {
+        stopAutoPlay(); // Limpar qualquer interval existente
+        autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+        // Adicionar indicador de progresso
+        if (indicators[currentSlide]) {
+            indicators[currentSlide].classList.add('auto-progress');
+        }
+    }
+    
+    // Função para parar auto-play
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+        // Remover indicadores de progresso
+        indicators.forEach(indicator => {
+            indicator.classList.remove('auto-progress');
+        });
+    }
+    
+    // Event listeners para os botões de navegação
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            nextSlide();
+            stopAutoPlay();
+            // Reiniciar auto-play após 3 segundos de inatividade
+            setTimeout(startAutoPlay, 3000);
+        });
+    }
+    
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            prevSlide();
+            stopAutoPlay();
+            // Reiniciar auto-play após 3 segundos de inatividade
+            setTimeout(startAutoPlay, 3000);
+        });
+    }
+    
+    // Event listeners para os indicadores
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            goToSlide(index);
+            stopAutoPlay();
+            // Reiniciar auto-play após 3 segundos de inatividade
+            setTimeout(startAutoPlay, 3000);
+        });
+    });
+    
+    // Pausar auto-play quando o mouse estiver sobre o carrossel
+    carousel.addEventListener('mouseenter', stopAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    
+    // Pausar auto-play quando a aba não estiver ativa
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
+    
+    // Suporte para navegação por teclado
+    document.addEventListener('keydown', (e) => {
+        // Verificar se o carrossel está visível
+        const heroSection = document.getElementById('inicio');
+        if (!heroSection) return;
+        
+        const rect = heroSection.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+                stopAutoPlay();
+                setTimeout(startAutoPlay, 3000);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+                stopAutoPlay();
+                setTimeout(startAutoPlay, 3000);
+            }
+        }
+    });
+    
+    // Suporte para gestos de swipe em dispositivos móveis
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50; // pixels mínimos para considerar um swipe
+        const swipeDistance = touchEndX - touchStartX;
+        
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+            if (swipeDistance > 0) {
+                // Swipe para a direita - slide anterior
+                prevSlide();
+            } else {
+                // Swipe para a esquerda - próximo slide
+                nextSlide();
+            }
+            
+            stopAutoPlay();
+            setTimeout(startAutoPlay, 3000);
+        }
+    }
+    
+    // Inicializar o carrossel
+    goToSlide(0);
+    startAutoPlay();
+    
+    console.log('Carrossel do hero inicializado com sucesso!');
+}
+
+// Função para resetar o carrossel (útil para debugging)
+function resetHeroCarousel() {
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    indicators.forEach(indicator => {
+        indicator.classList.remove('auto-progress');
+    });
+    
+    // Reinicializar
+    initHeroCarousel();
+}
+
+// Exportar funções do carrossel para uso global se necessário
+window.HeroCarousel = {
+    reset: resetHeroCarousel,
+    init: initHeroCarousel
+};

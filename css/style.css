@@ -49,6 +49,118 @@ body {
   overflow-x: hidden;
 }
 
+/* ========= ESTILOS DO CARROSSEL HERO ========= */
+#hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.carousel-slide.prev {
+  transform: translateX(-100%);
+}
+
+/* Indicadores do carrossel */
+.carousel-indicator {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  transform: scale(1.2);
+}
+
+.carousel-indicator:hover {
+  transform: scale(1.1);
+}
+
+/* Controles do carrossel */
+#carousel-prev,
+#carousel-next {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#carousel-prev:hover,
+#carousel-next:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Animações para o slide do LinkedIn */
+.carousel-slide:nth-child(2) .bg-white\/80 {
+  animation: slideInFromBottom 0.8s ease-out 0.3s both;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade para o carrossel */
+@media (max-width: 768px) {
+  .carousel-slide {
+    transition: all 0.5s ease;
+  }
+  
+  #carousel-prev,
+  #carousel-next {
+    padding: 8px;
+  }
+  
+  .carousel-indicator {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Auto-play indicator animation */
+.carousel-indicator.auto-progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--color-blue-light), var(--color-orange-light));
+  animation: progress-ring 5s linear;
+  opacity: 0.7;
+}
+
+@keyframes progress-ring {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
 /* ========= ESTILOS DO BANNER DE COOKIES ========= */
 #cookie-banner {
   backdrop-filter: blur(10px);
