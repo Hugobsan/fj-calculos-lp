@@ -766,13 +766,13 @@ function getWhatsAppUrl(phoneNumber, customMessage = '') {
 function getWhatsAppUrlByKey(keyName) {
     const phoneNumber = '553398337624';
     const messageTemplates = {
-        'quote': 'Olá! Gostaria de solicitar um orçamento personalizado para cálculos judiciais. Poderia me enviar mais informações sobre os serviços e valores?',
-        'services': 'Olá! Gostaria de conhecer mais sobre a metodologia ADPRE e os serviços especializados em cálculos trabalhistas.',
-        'liquidacao-sentenca': 'Olá! Gostaria de saber mais sobre o serviço de Liquidação de Sentença. Preciso de uma apuração precisa dos valores devidos com base na decisão judicial. Poderia me enviar informações sobre prazo e valor?',
-        'liquidacao-inicial': 'Olá! Tenho interesse no serviço de Liquidação da Petição Inicial. Preciso de um cálculo detalhado baseado nos pedidos da inicial para assegurar o valor correto da causa. Poderia me enviar informações?',
-        'calculos-contingencia': 'Olá! Gostaria de consultar sobre Cálculos de Contingência. Preciso de uma estimativa técnica do valor da ação e dos riscos para provisionamento. Poderia me auxiliar com informações sobre este serviço?',
-        'impugnacao-calculos': 'Olá! Preciso de auxílio com Impugnação de Cálculos. Gostaria de uma análise técnica e contestação fundamentada dos cálculos apresentados pela parte contrária. Poderia me enviar informações sobre este serviço?',
-        'default': 'Olá! Gostaria de solicitar um orçamento para cálculos judiciais.'
+        'quote': 'Olá! vim pelo site, e gostaria de um orçamento.',
+        'services': 'Olá! vim pelo site, e gostaria de um orçamento.',
+        'liquidacao-sentenca': 'Olá! vim pelo site, e gostaria de um orçamento para liquidação de sentença.',
+        'liquidacao-inicial': 'Olá! vim pelo site, e gostaria de um orçamento para liquidação da petição inicial.',
+        'calculos-contingencia': 'Olá! vim pelo site, e gostaria de um orçamento para cálculos de contingência.',
+        'impugnacao-calculos': 'Olá! vim pelo site, e gostaria de um orçamento para impugnação de cálculos.',
+        'default': 'Olá! vim pelo site, e gostaria de um orçamento.'
     };
 
     const message = messageTemplates[keyName] || messageTemplates['default'];
