@@ -23,6 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
     initCookieBanner();
     initHeroCarousel();
 
+    // Listener para mudanças de tamanho de tela (debounced)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (typeof handleCarouselResize === 'function') {
+                handleCarouselResize();
+            }
+        }, 250);
+    });
+
     // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
     const phoneInputs = document.querySelectorAll('input.phone-mask');
     phoneInputs.forEach(input => {
@@ -1222,6 +1233,13 @@ function initHeroCarousel() {
         return;
     }
     
+    // Verificar se é dispositivo móvel - se for, desabilitar carrossel
+    if (isMobileDevice()) {
+        console.log('Dispositivo móvel detectado - desabilitando carrossel e mostrando como stack');
+        setupMobileStackLayout();
+        return;
+    }
+    
     const slides = carousel.querySelectorAll('.carousel-slide');
     const prevButton = document.getElementById('carousel-prev');
     const nextButton = document.getElementById('carousel-next');
@@ -1359,42 +1377,84 @@ function initHeroCarousel() {
         }
     });
     
-    // Suporte para gestos de swipe em dispositivos móveis
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    carousel.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-    
-    carousel.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-    
-    function handleSwipe() {
-        const swipeThreshold = 50; // pixels mínimos para considerar um swipe
-        const swipeDistance = touchEndX - touchStartX;
-        
-        if (Math.abs(swipeDistance) > swipeThreshold) {
-            if (swipeDistance > 0) {
-                // Swipe para a direita - slide anterior
-                prevSlide();
-            } else {
-                // Swipe para a esquerda - próximo slide
-                nextSlide();
-            }
-            
-            stopAutoPlay();
-            setTimeout(startAutoPlay, 3000);
-        }
-    }
-    
     // Inicializar o carrossel
     goToSlide(0);
     startAutoPlay();
     
     console.log('Carrossel do hero inicializado com sucesso!');
+}
+
+// Função para configurar layout empilhado em mobile
+function setupMobileStackLayout() {
+    const carousel = document.getElementById('hero-carousel');
+    if (!carousel) return;
+    
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const controlsNext = document.getElementById('carousel-next');
+    const controlsPrev = document.getElementById('carousel-prev');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    
+    // Esconder controles do carrossel em mobile
+    if (controlsNext) controlsNext.style.display = 'none';
+    if (controlsPrev) controlsPrev.style.display = 'none';
+    indicators.forEach(indicator => indicator.style.display = 'none');
+    
+    // Modificar classes dos slides para layout empilhado
+    slides.forEach((slide, index) => {
+        // Remover classes de carrossel
+        slide.classList.remove('absolute', 'inset-0', 'active', 'prev');
+        slide.classList.remove('opacity-0', 'opacity-100', 'translate-x-0', 'translate-x-full', '-translate-x-full');
+        
+        // Adicionar classes para layout empilhado
+        slide.classList.add('relative', 'w-full', 'opacity-100');
+        slide.style.position = 'relative';
+        slide.style.transform = 'none';
+        slide.style.opacity = '1';
+        
+        // Adicionar separação entre os slides
+        if (index > 0) {
+            slide.style.marginTop = '4rem'; // 16 * 0.25rem = 4rem
+            
+            // Adicionar uma linha divisória visual
+            const divider = document.createElement('div');
+            divider.className = 'w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-8';
+            slide.style.borderTop = '1px solid rgba(0,0,0,0.1)';
+            slide.style.paddingTop = '2rem';
+        }
+        
+        // Ajustar altura mínima para mobile
+        if (index === 1) { // Slide do LinkedIn
+            slide.style.minHeight = 'auto';
+            
+            // Ajustar layout interno para mobile
+            const container = slide.querySelector('.container');
+            if (container) {
+                const grid = container.querySelector('.grid');
+                if (grid) {
+                    grid.classList.remove('lg:grid-cols-3');
+                    grid.classList.add('grid-cols-1');
+                    
+                    // Reorganizar ordem dos elementos
+                    const textContent = grid.querySelector('.lg\\:col-span-2');
+                    const imageContent = grid.querySelector('.text-center:not(.lg\\:col-span-2)');
+                    
+                    if (textContent && imageContent) {
+                        // Colocar imagem primeiro em mobile
+                        grid.insertBefore(imageContent, textContent);
+                        
+                        // Ajustar classes
+                        textContent.classList.remove('lg:col-span-2', 'lg:text-left');
+                        textContent.classList.add('text-center');
+                    }
+                }
+            }
+        }
+    });
+    
+    // Adicionar classe especial ao container para identificar modo mobile
+    carousel.classList.add('mobile-stack-layout');
+    
+    console.log('Layout empilhado configurado para mobile');
 }
 
 // Função para resetar o carrossel (útil para debugging)
@@ -1408,8 +1468,46 @@ function resetHeroCarousel() {
     initHeroCarousel();
 }
 
+// Função para lidar com mudanças de tamanho de tela
+function handleCarouselResize() {
+    const carousel = document.getElementById('hero-carousel');
+    if (!carousel) return;
+    
+    const wasMobileLayout = carousel.classList.contains('mobile-stack-layout');
+    const isMobileNow = isMobileDevice();
+    
+    // Se mudou de mobile para desktop ou vice-versa, reinicializar
+    if ((wasMobileLayout && !isMobileNow) || (!wasMobileLayout && isMobileNow)) {
+        console.log('Mudança de layout detectada, reinicializando carrossel...');
+        
+        // Resetar todas as classes e estilos
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        slides.forEach(slide => {
+            slide.className = 'carousel-slide';
+            slide.style.cssText = '';
+        });
+        
+        carousel.classList.remove('mobile-stack-layout');
+        
+        // Mostrar controles novamente
+        const controlsNext = document.getElementById('carousel-next');
+        const controlsPrev = document.getElementById('carousel-prev');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        
+        if (controlsNext) controlsNext.style.display = '';
+        if (controlsPrev) controlsPrev.style.display = '';
+        indicators.forEach(indicator => indicator.style.display = '');
+        
+        // Reinicializar
+        setTimeout(() => {
+            initHeroCarousel();
+        }, 100);
+    }
+}
+
 // Exportar funções do carrossel para uso global se necessário
 window.HeroCarousel = {
     reset: resetHeroCarousel,
-    init: initHeroCarousel
+    init: initHeroCarousel,
+    handleResize: handleCarouselResize
 };
