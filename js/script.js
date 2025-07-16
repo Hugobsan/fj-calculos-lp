@@ -489,7 +489,7 @@ function handleWhatsAppClick(e) {
     console.log('Clique no WhatsApp detectado!');
 
     const phoneNumber = '553398337624';
-    const message = encodeURIComponent(getWhatsAppUrlByKey());
+    const message = encodeURIComponent('Olá! vim pelo site, e gostaria de um orçamento.');
 
     console.log('Dispositivo móvel:', isMobileDevice());
 
@@ -636,7 +636,7 @@ function customizeWhatsAppLink() {
 
     if (whatsappButton) {
         const phoneNumber = '553398337624';
-        const message = encodeURIComponent(getWhatsAppUrlByKey());
+        const message = encodeURIComponent('Olá! vim pelo site, e gostaria de um orçamento.');
 
         // Se for mobile, usar o protocolo do app
         if (isMobileDevice()) {
@@ -730,7 +730,7 @@ function updateWhatsAppNumber(phoneNumber, customMessage = '') {
     const whatsappButton = document.querySelector('.whatsapp-button');
 
     if (whatsappButton && phoneNumber) {
-        const message = customMessage || getWhatsAppUrlByKey();
+        const message = customMessage || 'Olá! vim pelo site, e gostaria de um orçamento.';
         const encodedMessage = encodeURIComponent(message);
 
         //Setando href usando getWhatsAppUrl
@@ -752,7 +752,7 @@ function getWhatsAppUrl(phoneNumber, customMessage = '') {
         phoneNumber = '553398337624'; // Fallback para o número padrão
     }
 
-    const message = customMessage || getWhatsAppUrlByKey();
+    const message = customMessage || 'Olá! vim pelo site, e gostaria de um orçamento.';
     const encodedMessage = encodeURIComponent(message);
 
     if (isMobileDevice()) {
@@ -988,7 +988,7 @@ function initWhatsAppIntegration() {
     console.log('Inicializando integração WhatsApp...');
 
     // Configurar número do WhatsApp primeiro
-    updateWhatsAppNumber('553398337624', getWhatsAppUrlByKey());
+    updateWhatsAppNumber('553398337624', 'Olá! vim pelo site, e gostaria de um orçamento.');
 
     // Depois customizar o link baseado no dispositivo
     customizeWhatsAppLink();
