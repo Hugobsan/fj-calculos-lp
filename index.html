@@ -221,8 +221,11 @@
           <!-- Desktop Navigation -->
           <div class="hidden md:flex items-center space-x-8">
             <a href="#inicio" class="text-secondary hover:text-blue-light transition-colors duration-300">Início</a>
-            <a href="#servicos" class="text-secondary hover:text-blue-light transition-colors duration-300">Serviços</a>
             <a href="#sobre" class="text-secondary hover:text-blue-light transition-colors duration-300">Sobre</a>
+            <a href="#servicos" class="text-secondary hover:text-blue-light transition-colors duration-300">Serviços</a>
+            <a href="#metodo" class="text-secondary hover:text-blue-light transition-colors duration-300">Método</a>
+            <a href="#perguntas-frequentes" class="text-secondary hover:text-blue-light transition-colors duration-300">FAQ</a>
+            <a href="#avaliacoes" class="text-secondary hover:text-blue-light transition-colors duration-300">Avaliações</a>
             <a href="#contato" class="text-secondary hover:text-blue-light transition-colors duration-300">Contato</a>
             <a
               href="javascript:void(0)"
@@ -246,13 +249,22 @@
             <a href="#inicio" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
               >Início</a
             >
+            <a href="#sobre" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
+              >Sobre</a
+            >
             <a
               href="#servicos"
               class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
               >Serviços</a
             >
-            <a href="#sobre" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
-              >Sobre</a
+            <a href="#metodo" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
+              >Método</a
+            >
+            <a href="#perguntas-frequentes" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
+              >FAQ</a
+            >
+            <a href="#avaliacoes" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
+              >Avaliações</a
             >
             <a href="#contato" class="block px-3 py-2 text-primary hover:text-blue-light transition-colors duration-300"
               >Contato</a
@@ -269,203 +281,110 @@
       </nav>
     </header>
 
-    <!-- Hero Section with Carousel -->
+    <!-- Hero Section -->
     <section
       id="inicio"
       class="pt-16 lg:pt-20 min-h-screen flex items-center bg-gradient-to-br from-secondary via-blue-50 to-orange-50 relative overflow-hidden"
     >
-      <!-- Carousel Container -->
-      <div id="hero-carousel" class="w-full h-full relative">
-        
-        <!-- Slide 1 - Conteúdo Principal -->
-        <div class="carousel-slide active absolute inset-0 flex items-center transition-all duration-700 ease-in-out opacity-100 translate-x-0">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-3 gap-12 items-center">
-              <div class="text-center lg:text-left lg:col-span-2">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-6 leading-tight">
-                  <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent block"
-                    >Especialista em Cálculos Trabalhistas</span
-                  >
-                  <span class="text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-600 block mt-2"
-                    >+600 casos realizados</span
-                  >
-                </h1>
-                <p class="text-lg lg:text-xl text-gray-600 leading-relaxed">
-                  Para advogados que buscam
-                  <span class="text-orange-dark font-semibold">precisão, agilidade e estratégia</span> em cálculos
-                  trabalhistas.
-                </p>
-                <p class="text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed">
-                  Mais de 600 cálculos elaborados com a
-                  <span class="text-orange-dark font-semibold">metodologia <strong>ADPRE</strong></span
-                  >, garantindo confiança, agregando valor às ações e reduzindo riscos de condenações indevidas. Atuação em
-                  todo o Brasil.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                  <a
-                    href="#"
-                    class="bg-gradient-to-r from-blue-light to-blue-dark text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 button-with-icon animate-on-scroll inline-flex items-center justify-center"
-                    data-cta="quote"
-                  >
-                    <span class="material-icons mr-2">calculate</span>
-                    Solicitar Orçamento
-                  </a>
-                  <a
-                    href="#"
-                    class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 button-with-icon animate-on-scroll inline-flex items-center justify-center"
-                    data-cta="services"
-                  >
-                    <span class="material-icons inline-block mr-2">info</span>
-                    Saiba Mais
-                  </a>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="relative">
-                  <div class="absolute inset-0 rounded-full blur-3xl opacity-20"></div>
-                  <img
-                    src="./assets/images/logo/p1.png"
-                    alt="FJ Cálculos - Especialista em cálculos judiciais trabalhistas com mais de 600 casos realizados"
-                    class="relative mx-auto h-64 lg:h-80 w-auto drop-shadow-2xl slide-in-scale"
-                    loading="lazy"
-                    width="320"
-                    height="320"
-                  />
-                </div>
-              </div>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div class="text-center lg:text-left lg:col-span-7">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary mb-5 leading-tight">
+              <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent block"
+                >Cálculos Trabalhistas – Liquidação de sentença – Impugnações</span
+              >
+            </h1>
+            <p class="text-xl sm:text-2xl lg:text-[1.35rem] font-semibold text-primary/90 leading-snug mb-4 max-w-xl">
+              Advogado(a): Eleve o nível de sua atuação com honorários 30% maiores e proteja seus clientes de passivos incorretos.
+            </p>
+            <p class="text-lg lg:text-xl text-gray-600 leading-relaxed mb-8 max-w-xl">
+              Garanta <span class="text-orange-dark font-semibold">agilidade e resultados potencialmente melhores</span>, e pare de perder tempo com o operacional dos cálculos.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a
+                href="#"
+                class="bg-gradient-to-r from-blue-light to-blue-dark text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 button-with-icon animate-on-scroll inline-flex items-center justify-center"
+                data-cta="quote"
+              >
+                <span class="material-icons mr-2">calculate</span>
+                Solicitar Orçamento
+              </a>
+              <a
+                href="#"
+                class="border-2 border-primary text-primary px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 button-with-icon animate-on-scroll inline-flex items-center justify-center"
+                data-cta="services"
+              >
+                <span class="material-icons inline-block mr-2">info</span>
+                Saiba Mais
+              </a>
+            </div>
+          </div>
+          <div class="text-center lg:col-span-5 flex justify-center items-start">
+            <div class="relative w-full max-w-lg xl:max-w-xl aspect-[3/4] lg:max-h-[calc(100vh-6rem)] lg:aspect-[3/4] overflow-hidden rounded-2xl">
+              <div class="absolute inset-0 rounded-2xl blur-3xl opacity-20 bg-blue-light/30 pointer-events-none"></div>
+              <img
+                src="./assets/images/tiago-bracos-cruzados.jpeg"
+                alt="Tiago - FJ Cálculos - Especialista em cálculos judiciais trabalhistas com mais de 600 casos realizados"
+                class="relative w-full h-full object-cover object-center rounded-2xl drop-shadow-2xl slide-in-scale"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
-        
-        <!-- Slide 2 - LinkedIn -->
-        <div class="carousel-slide absolute inset-0 flex items-center transition-all duration-700 ease-in-out opacity-0 translate-x-full">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-3 gap-12 items-center">
-              <div class="text-center lg:text-left lg:col-span-2">
-                <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 lg:p-12 shadow-2xl border border-white/20">
-                  <div class="flex items-center mb-6">
-                    <div class="bg-blue-600 p-3 rounded-xl mr-4">
-                      <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <h1 class="text-3xl lg:text-4xl font-bold text-primary">Estudos de Caso no LinkedIn</h1>
-                      <p class="text-lg text-gray-600">Acompanhe análises práticas e insights valiosos</p>
-                    </div>
-                  </div>
-                  
-                  <h2 class="text-2xl lg:text-3xl font-bold text-primary mb-4">
-                    <span class="bg-gradient-to-r from-blue-light to-blue-dark bg-clip-text text-transparent">
-                      Aprenda com casos reais
-                    </span>
-                  </h2>
-                  
-                  <p class="text-lg lg:text-xl text-gray-600 leading-relaxed mb-6">
-                    No meu LinkedIn, compartilho regularmente 
-                    <span class="text-blue-dark font-semibold">estudos de caso detalhados</span>, 
-                    análises de decisões judiciais e 
-                    <span class="text-orange-dark font-semibold">dicas práticas</span> 
-                    que podem fazer a diferença em seus casos trabalhistas.
-                  </p>
-                  
-                  <ul class="text-lg text-gray-600 mb-8 space-y-3">
-                    <li class="flex items-center">
-                      <span class="material-icons text-blue-light mr-3">check_circle</span>
-                      Análises de casos práticos e reais
-                    </li>
-                    <li class="flex items-center">
-                      <span class="material-icons text-blue-light mr-3">check_circle</span>
-                      Estrátegias que garantem valorização ou redução de custos
-                    </li>
-                    <li class="flex items-center">
-                      <span class="material-icons text-blue-light mr-3">check_circle</span>
-                      Dicas sobre liquidação de sentenças e análises das verbas trabalhistas.
-                    </li>
-                  </ul>
-                  
-                  <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a
-                      href="https://www.linkedin.com/in/tiagocalculos/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center justify-center"
-                    >
-                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                      Seguir no LinkedIn
-                    </a>
-                    <a
-                      href="#"
-                      class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 inline-flex items-center justify-center"
-                      data-cta="quote"
-                    >
-                      <span class="material-icons mr-2">calculate</span>
-                      Solicitar Orçamento
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="text-center">
-                <div class="relative">
-                  <div class="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl"></div>
-                  <div class="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100">
-                    <div class="text-center mb-6">
-                      <div class="bg-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                      </div>
-                      <h3 class="text-xl font-bold text-primary mb-2">Tiago FJ</h3>
-                      <p class="text-gray-600 mb-4">Especialista em Cálculos Trabalhistas</p>
-                      <div class="bg-gradient-to-r from-blue-50 to-orange-50 rounded-xl p-4">
-                        <p class="text-sm text-gray-700 font-medium">
-                          "Compartilho semanalmente casos que podem economizar milhares de reais em suas ações"
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      </div>
+    </section>
+
+    <!-- Quem eu sou -->
+    <section id="sobre" class="py-16 lg:py-24 bg-gradient-to-br from-primary via-gray-900 to-primary text-white relative overflow-hidden">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div class="lg:col-span-5 order-2 lg:order-1 flex justify-center animate-left">
+            <div class="relative w-full max-w-md aspect-[3/4] overflow-hidden rounded-2xl shadow-2xl ring-2 ring-white/20">
+              <img
+                src="./assets/images/tiago-imagem-2.jpeg"
+                alt="Tiago Freire - Calculista judicial, FJ Cálculos Trabalhistas"
+                class="w-full h-full object-cover object-center"
+                loading="lazy"
+                width="400"
+                height="533"
+              />
+            </div>
+          </div>
+          <div class="lg:col-span-7 order-1 lg:order-2 animate-right">
+            <h2 class="text-3xl lg:text-4xl font-bold text-white mb-8">Quem eu sou</h2>
+            <p class="text-lg lg:text-xl text-white font-semibold leading-relaxed mb-6 pl-5 border-l-4 border-blue-light bg-white/10 py-3 pr-4 rounded-r-xl">
+              Sou o Tiago Freire, calculista judicial, com sólida experiência, proprietário da FJ Cálculos Trabalhistas, colunista e monitor da Milhorim Cálculos, referência na área de ensino de cálculos trabalhistas.
+            </p>
+            <p class="text-lg text-gray-300 leading-relaxed mb-5">
+              Minha formação profissional iniciou-se como digitador, evoluindo para assistente de perito contábil, onde adquiri sólida experiência na liquidação de sentenças trabalhistas e no desenvolvimento de pensamento crítico aplicado à análise técnica de cálculos.
+            </p>
+            <p class="text-lg text-gray-300 leading-relaxed mb-8">
+              Atualmente, atuo de forma exclusiva na assistência técnica para advogados, calculistas e peritos de alta demanda, além de fazer parte dos monitores de alunos da Milhorim Cálculos.
+            </p>
+            <p class="text-lg font-semibold text-white mb-4">Siga minhas redes sociais para me conhecer melhor:</p>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="https://www.instagram.com/tiagocalculista/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
+              >
+                <img src="./assets/icons/instagram.svg" alt="" class="w-5 h-5 svg-icon-white" aria-hidden="true" />
+                Instagram
+              </a>
+              <a
+                href="https://www.linkedin.com/in/tiagocalculos/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 bg-[#0A66C2] hover:bg-[#004182] text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105"
+              >
+                <img src="./assets/icons/linkedin.svg" alt="" class="w-5 h-5 svg-icon-white" aria-hidden="true" />
+                LinkedIn
+              </a>
             </div>
           </div>
         </div>
-        
       </div>
-      
-      <!-- Carousel Controls -->
-      <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20">
-        <button 
-          id="carousel-prev" 
-          class="bg-white/80 backdrop-blur-sm hover:bg-white text-primary p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-          aria-label="Slide anterior"
-        >
-          <span class="material-icons">chevron_left</span>
-        </button>
-        <button 
-          id="carousel-next" 
-          class="bg-white/80 backdrop-blur-sm hover:bg-white text-primary p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-          aria-label="Próximo slide"
-        >
-          <span class="material-icons">chevron_right</span>
-        </button>
-      </div>
-      
-      <!-- Carousel Indicators -->
-      <div class="absolute bottom-8 right-8 flex space-x-2 z-20">
-        <button 
-          class="carousel-indicator active w-3 h-3 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300" 
-          data-slide="0"
-          aria-label="Ir para slide 1"
-        ></button>
-        <button 
-          class="carousel-indicator w-3 h-3 rounded-full bg-white/40 backdrop-blur-sm hover:bg-white/60 transition-all duration-300" 
-          data-slide="1"
-          aria-label="Ir para slide 2"
-        ></button>
-      </div>
-      
     </section>
 
     <!-- Services Section -->
@@ -473,7 +392,7 @@
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-4">
-            Serviços Especializados em Cálculos Trabalhistas
+            Principais serviços
           </h2>
           <p class="text-lg text-gray-600 max-w-2xl mx-auto">
             Precisão, agilidade e garantia de melhores valores nas ações, redução de custos indevidos e mais tempo para
@@ -584,45 +503,10 @@
           </a>
         </div>
 
-        <!-- Seção de público-alvo e benefícios -->
-        <div class="mt-16 bg-gradient-to-r from-blue-50 to-orange-50 rounded-3xl p-8 lg:p-12">
-          <div class="text-center mb-8">
-            <h3 class="text-2xl lg:text-3xl font-bold text-primary mb-4">Especializado para Advogados</h3>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-              Nossos serviços são desenvolvidos especificamente para atender as necessidades do meio jurídico,
-              oferecendo cálculos precisos e fundamentados tecnicamente para fortalecer suas ações judiciais.
-            </p>
-          </div>
-          <div class="grid md:grid-cols-3 gap-8 mt-12">
-            <div class="text-center animate-left">
-              <div class="bg-white p-6 rounded-2xl shadow-lg mb-4 hover:shadow-xl transition-all duration-300">
-                <span class="material-icons text-blue-light text-4xl mb-4 block">speed</span>
-                <h4 class="text-lg font-bold text-primary mb-2">Agilidade</h4>
-                <p class="text-gray-600">Cálculos entregues no prazo adequado para suas necessidades processuais</p>
-              </div>
-            </div>
-
-            <div class="text-center animate-on-scroll">
-              <div class="bg-white p-6 rounded-2xl shadow-lg mb-4 hover:shadow-xl transition-all duration-300">
-                <span class="material-icons text-orange-dark text-4xl mb-4 block">verified</span>
-                <h4 class="text-lg font-bold text-primary mb-2">Precisão</h4>
-                <p class="text-gray-600">Análises técnicas detalhadas e fundamentadas juridicamente</p>
-              </div>
-            </div>
-
-            <div class="text-center animate-right">
-              <div class="bg-white p-6 rounded-2xl shadow-lg mb-4 hover:shadow-xl transition-all duration-300">
-                <span class="material-icons text-blue-light text-4xl mb-4 block">support_agent</span>
-                <h4 class="text-lg font-bold text-primary mb-2">Suporte</h4>
-                <p class="text-gray-600">Acompanhamento especializado durante todo o processo</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
     <!-- Metodologia ADPRE Section -->
-    <section class="py-24 bg-gradient-to-br from-primary via-gray-900 to-primary text-white relative overflow-hidden">
+    <section id="metodo" class="py-24 bg-gradient-to-br from-primary via-gray-900 to-primary text-white relative overflow-hidden">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-10">
         <div class="absolute top-20 left-10 w-32 h-32 border border-blue-light rounded-full"></div>
@@ -848,246 +732,28 @@
             </div>
           </div>
         </div>
-        <!-- Seção de destaque dos resultados e CTA unificada -->
-        <div class="text-center mb-16">
-          <div
-            class="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-white/20 relative overflow-hidden"
-          >
-            <!-- Elementos decorativos -->
-            <div
-              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-light via-orange-light to-blue-light"
-            ></div>
 
-            <div class="relative z-10">
-              <div class="flex items-center justify-center mb-6">
-                <div class="flex items-center space-x-2">
-                  <div class="w-3 h-3 bg-blue-light rounded-full animate-pulse"></div>
-                  <div class="w-2 h-2 bg-orange-light rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
-                  <div class="w-3 h-3 bg-blue-light rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
-                </div>
-              </div>
-
-              <h3 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-8 leading-tight">
-                O Método ADPRE divide o cálculo em
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-light to-orange-light"
-                  >etapas</span
-                >,<br />
-                <span class="text-2xl lg:text-3xl xl:text-4xl font-normal text-gray-300"
-                  >evitando erros e maximizando resultados</span
-                >
-              </h3>
-
-              <p class="text-xl lg:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-                <span class="material-symbols-outlined text-2xl group-hover:rotate-12"> forward_to_inbox </span>
-                Entre em contato agora e conquiste <strong class="text-blue-light">resultados superiores</strong> com o
-                <strong class="text-orange-light">Método ADPRE</strong>!
-              </p>
-
-              <!-- CTA Button -->
-              <div class="flex justify-center">
-                <a
-                  href="#"
-                  class="group bg-gradient-to-r from-blue-light to-blue-dark text-white px-10 py-5 rounded-full text-xl font-bold hover:shadow-2xl transition-all duration-500 transform hover:scale-105 flex items-center space-x-3 hover:from-blue-dark hover:to-blue-light inline-flex"
-                  data-cta="quote"
-                >
-                  <span class="material-icons text-2xl group-hover:rotate-12 transition-transform duration-300"
-                    >rocket_launch</span
-                  >
-                  <span>Aplicar Método ADPRE no Meu Caso</span>
-                  <div class="w-2 h-2 bg-white rounded-full group-hover:scale-150 transition-all duration-300"></div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contato" class="py-20 bg-primary">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Entre em Contato</h2>
-          <p class="text-lg text-gray-300 max-w-2xl mx-auto">
-            Solicite um orçamento personalizado de acordo com suas necessidades.
-          </p>
-        </div>
-
-        <div class="grid lg:grid-cols-2 gap-12">
-          <!-- Contact Form -->
-          <div class="bg-white p-8 rounded-2xl shadow-xl animate-left">
-            <h3 class="text-2xl font-bold text-primary mb-6">Solicitar Orçamento</h3>
-            <form class="space-y-6" id="form-contato" action="https://formspree.io/f/xnnvdkwl" method="POST">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
-                <input
-                  type="text"
-                  name="nome"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
-                  placeholder="Seu nome completo"
-                  required
-                  minlength="2"
-                  maxlength="100"
-                  data-validate="true"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
-                <input
-                  type="email"
-                  name="email"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
-                  placeholder="seu@email.com"
-                  required
-                  minlength="5"
-                  maxlength="100"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
-                <input
-                  type="tel"
-                  name="telefone"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300 phone-mask"
-                  placeholder="(00) 00000-0000"
-                  required
-                  minlength="10"
-                  maxlength="15"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
-                <textarea
-                  rows="4"
-                  name="mensagem"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
-                  placeholder="Descreva suas necessidades..."
-                  required
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                id="form-submit-button"
-                class="w-full bg-gradient-to-r from-blue-light to-blue-dark text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 button-with-icon"
-              >
-                <span class="material-icons inline-block mr-2">send</span>
-                Enviar Mensagem
-              </button>
-              <p id="form-status" class="text-sm text-center mt-4"></p>
-            </form>
-          </div>
-
-          <!-- Contact Info -->
-          <div class="text-white">
-            <h3 class="text-2xl font-bold mb-8">Informações de Contato</h3>
-            <div class="space-y-6 animate-contact-info">
-              <div class="flex items-center" style="opacity: 0">
-                <div class="bg-blue-light p-3 rounded-full mr-4 lr-0">
-                  <span class="material-icons text-white">phone</span>
-                </div>
-                <div>
-                  <div class="font-semibold">Telefone</div>
-                  <div class="text-gray-300">(33) 99833-7624</div>
-                </div>
-              </div>
-
-              <div class="flex items-center" style="opacity: 0">
-                <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
-                  <span class="material-icons text-white">email</span>
-                </div>
-                <div>
-                  <div class="font-semibold">E-mail</div>
-                  <div class="text-gray-300">contato@fjcalculos.com.br</div>
-                </div>
-              </div>
-
-              <div class="flex items-center" style="opacity: 0">
-                <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
-                  <span class="material-icons text-white">schedule</span>
-                </div>
-                <div>
-                  <div class="font-semibold">Horário de Atendimento</div>
-                  <div class="text-gray-300">Segunda a Sexta: 8h às 18h</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="sobre" class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-6">Sobre Nós</h2>
-          <div class="max-w-4xl mx-auto">
-            <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-              Com <strong class="text-blue-light">sólida experiência de 3 anos</strong> e mais de
-              <strong class="text-orange-dark">600 casos liquidados</strong>, oferecemos assistência técnica
-              especializada em cálculos trabalhistas, com foco prioritário em apoiar advogados na obtenção de resultados
-              precisos, seguros e fundamentados.
-            </p>
-            <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-              Nossa atuação vai além dos advogados: também prestamos suporte a
-              <strong class="text-blue-light">calculistas e peritos</strong>, simplificando suas rotinas com
-              metodologias rigorosas, soluções técnicas e atendimento personalizado.
-            </p>
-            <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-              Comprometemo-nos com a <strong class="text-orange-dark">excelência, agilidade e transparência</strong> em
-              cada cálculo, sempre alinhados às normas vigentes e utilizando o
-              <strong class="text-blue-light">PJeCalc</strong> para garantir máxima confiabilidade e segurança jurídica.
-            </p>
-            <p class="text-xl text-primary font-semibold">
-              Nosso objetivo é fortalecer a sua atuação, agregando valor aos processos e contribuindo para o melhor
-              resultado.
-            </p>
-          </div>
-        </div>
-
-        <!-- Estatísticas -->
+        <!-- Resultados -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          <div
-            class="text-center bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 animate-left"
-          >
-            <div
-              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="material-icons text-white text-2xl">calculate</span>
-            </div>
-            <div class="text-3xl font-bold text-blue-light mb-2 animate-counter">600+</div>
-            <div class="text-gray-600 font-medium">Casos Liquidados</div>
+          <div class="text-center bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:border-blue-light/40 transition-all duration-300">
+            <div class="text-3xl lg:text-4xl font-bold text-blue-light mb-2">+15 mil</div>
+            <div class="text-gray-300 font-medium">casos realizados</div>
           </div>
-
-          <div
-            class="text-center bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 animate-on-scroll"
-          >
-            <div
-              class="bg-gradient-to-r from-orange-light to-orange-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="material-icons text-white text-2xl">timeline</span>
-            </div>
-            <div class="text-3xl font-bold text-orange-dark mb-2">3</div>
-            <div class="text-gray-600 font-medium">Anos de Experiência</div>
+          <div class="text-center bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:border-orange-light/40 transition-all duration-300">
+            <div class="text-3xl lg:text-4xl font-bold text-orange-light mb-2">+30 milhões</div>
+            <div class="text-gray-300 font-medium">em liquidações</div>
           </div>
-
-          <div
-            class="text-center bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 animate-right"
-          >
-            <div
-              class="bg-gradient-to-r from-blue-light to-blue-dark p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4"
-            >
-              <span class="material-icons text-white text-2xl">verified</span>
-            </div>
-            <div class="text-3xl font-bold text-blue-light mb-2">100%</div>
-            <div class="text-gray-600 font-medium">Confiabilidade</div>
+          <div class="text-center bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20 hover:border-blue-light/40 transition-all duration-300">
+            <span class="material-icons text-4xl text-blue-light mb-2 block">gavel</span>
+            <div class="text-gray-300 font-medium">Atendimento em todos os TRTs</div>
           </div>
         </div>
+        
       </div>
     </section>
 
     <!-- FAQ Section for SEO -->
-    <section class="py-20 bg-white">
+    <section id="perguntas-frequentes" class="py-20 bg-white">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 slide-in-scale">
           <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-4">Perguntas Frequentes</h2>
@@ -1230,6 +896,132 @@
       </div>
     </section>
 
+    <!-- Avaliações dos Clientes (Google Reviews) -->
+    <section id="avaliacoes" class="py-20 bg-white">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl lg:text-4xl font-bold text-primary mb-4">Avaliações dos Clientes</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            O que nossos clientes dizem sobre o trabalho da FJ Cálculos
+          </p>
+        </div>
+        <div class="elfsight-app-50d6f75c-a179-449a-b2a1-c1386c5c40fa" data-elfsight-app-lazy></div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-20 bg-primary">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">Entre em Contato</h2>
+          <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+            Solicite um orçamento personalizado de acordo com suas necessidades.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+          <!-- Contact Form -->
+          <div class="bg-white p-8 rounded-2xl shadow-xl animate-left">
+            <h3 class="text-2xl font-bold text-primary mb-6">Solicitar Orçamento</h3>
+            <form class="space-y-6" id="form-contato" action="https://formspree.io/f/xnnvdkwl" method="POST">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                <input
+                  type="text"
+                  name="nome"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
+                  placeholder="Seu nome completo"
+                  required
+                  minlength="2"
+                  maxlength="100"
+                  data-validate="true"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                <input
+                  type="email"
+                  name="email"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
+                  placeholder="seu@email.com"
+                  required
+                  minlength="5"
+                  maxlength="100"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                <input
+                  type="tel"
+                  name="telefone"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300 phone-mask"
+                  placeholder="(00) 00000-0000"
+                  required
+                  minlength="10"
+                  maxlength="15"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+                <textarea
+                  rows="4"
+                  name="mensagem"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-light focus:border-transparent transition-all duration-300"
+                  placeholder="Descreva suas necessidades..."
+                  required
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                id="form-submit-button"
+                class="w-full bg-gradient-to-r from-blue-light to-blue-dark text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 button-with-icon"
+              >
+                <span class="material-icons inline-block mr-2">send</span>
+                Enviar Mensagem
+              </button>
+              <p id="form-status" class="text-sm text-center mt-4"></p>
+            </form>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="text-white">
+            <h3 class="text-2xl font-bold mb-8">Informações de Contato</h3>
+            <div class="space-y-6 animate-contact-info">
+              <div class="flex items-center" style="opacity: 0">
+                <div class="bg-blue-light p-3 rounded-full mr-4 lr-0">
+                  <span class="material-icons text-white">phone</span>
+                </div>
+                <div>
+                  <div class="font-semibold">Telefone</div>
+                  <div class="text-gray-300">(33) 99833-7624</div>
+                </div>
+              </div>
+
+              <div class="flex items-center" style="opacity: 0">
+                <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
+                  <span class="material-icons text-white">email</span>
+                </div>
+                <div>
+                  <div class="font-semibold">E-mail</div>
+                  <div class="text-gray-300">contato@fjcalculos.com.br</div>
+                </div>
+              </div>
+
+              <div class="flex items-center" style="opacity: 0">
+                <div class="bg-orange-dark p-3 rounded-full mr-4 lr-0">
+                  <span class="material-icons text-white">schedule</span>
+                </div>
+                <div>
+                  <div class="font-semibold">Horário de Atendimento</div>
+                  <div class="text-gray-300">Segunda a Sexta: 8h às 18h</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -1247,7 +1039,7 @@
               <div><strong>CNPJ: </strong> 59.322.706/0001-12</div>
               <div><strong>Razão Social</strong> TIAGO FREIRE JARDIM</div>
               <div>
-                <strong>Endereço: </strong> Rua Nicanor Rocha Botelho, 30 - Centro, Coronel Murta - MG, 39.635-000
+                <strong>Endereço: </strong> R. Pedro Gonçalves, 1259 - Bela Vista, Araçuaí - MG, 39606-142
               </div>
             </div>
           </div>
@@ -1256,8 +1048,11 @@
             <h4 class="text-lg font-semibold mb-4">Links Rápidos</h4>
             <ul class="space-y-2 text-gray-400">
               <li><a href="#inicio" class="hover:text-blue-light transition-colors duration-300">Início</a></li>
-              <li><a href="#servicos" class="hover:text-blue-light transition-colors duration-300">Serviços</a></li>
               <li><a href="#sobre" class="hover:text-blue-light transition-colors duration-300">Sobre</a></li>
+              <li><a href="#servicos" class="hover:text-blue-light transition-colors duration-300">Serviços</a></li>
+              <li><a href="#metodo" class="hover:text-blue-light transition-colors duration-300">Método</a></li>
+              <li><a href="#perguntas-frequentes" class="hover:text-blue-light transition-colors duration-300">FAQ</a></li>
+              <li><a href="#avaliacoes" class="hover:text-blue-light transition-colors duration-300">Avaliações</a></li>
               <li><a href="#contato" class="hover:text-blue-light transition-colors duration-300">Contato</a></li>
             </ul>
           </div>

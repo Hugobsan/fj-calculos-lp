@@ -21,18 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     enhanceServiceCards();
     initFormspreeIntegration();
     initCookieBanner();
-    initHeroCarousel();
-
-    // Listener para mudanças de tamanho de tela (debounced)
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (typeof handleCarouselResize === 'function') {
-                handleCarouselResize();
-            }
-        }, 250);
-    });
+    initElfsightReviews();
 
     // Aplica máscara de telefone a todos os inputs com a classe 'phone-mask'
     const phoneInputs = document.querySelectorAll('input.phone-mask');
@@ -817,6 +806,67 @@ function initCookieBanner() {
     setupCookieButtons();
 }
 
+// Remove o link de branding "Free Google Reviews Widget" injetado pelo Elfsight
+// Remove o link de branding só quando ele ficar visível (widget já processou)
+function removeElfsightBranding() {
+    var link = document.querySelector('a[href*="elfsight.com/google-reviews-widget"]:not([data-elfsight-observed])');
+    if (!link || !link.parentNode) return;
+
+    link.setAttribute('data-elfsight-observed', 'true');
+    var observer = new IntersectionObserver(
+        function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting && entry.target.parentNode) {
+                    entry.target.parentNode.removeChild(entry.target);
+                    observer.disconnect();
+                }
+            });
+        },
+        { threshold: 0.1, rootMargin: '0px' }
+    );
+    observer.observe(link);
+}
+
+// Widget de avaliações Google (Elfsight): oculta a seção se o script não carregar ou o widget não renderizar
+function initElfsightReviews() {
+    var ELFSIGHT_SCRIPT_URL = 'https://elfsightcdn.com/platform.js';
+    var WIDGET_APP_ID = '50d6f75c-a179-449a-b2a1-c1386c5c40fa';
+    var CHECK_WIDGET_AFTER_MS = 8000;
+    var BRANDING_CHECK_INTERVAL_MS = 500;
+    var BRANDING_CHECK_MAX_MS = 15000;
+
+    var section = document.getElementById('avaliacoes');
+    if (!section) return;
+
+    function hideAvaliacoesSection() {
+        section.style.display = 'none';
+    }
+
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = ELFSIGHT_SCRIPT_URL;
+    script.onerror = function () {
+        hideAvaliacoesSection();
+    };
+    script.onload = function () {
+        var brandingCheckStart = Date.now();
+        var brandingInterval = setInterval(function () {
+            removeElfsightBranding();
+            if (Date.now() - brandingCheckStart > BRANDING_CHECK_MAX_MS) {
+                clearInterval(brandingInterval);
+            }
+        }, BRANDING_CHECK_INTERVAL_MS);
+
+        setTimeout(function () {
+            var widget = document.querySelector('.elfsight-app-' + WIDGET_APP_ID);
+            if (!widget || !widget.children || widget.children.length === 0) {
+                hideAvaliacoesSection();
+            }
+        }, CHECK_WIDGET_AFTER_MS);
+    };
+    (document.head || document.documentElement).appendChild(script);
+}
+
 // Mostrar banner de cookies
 function showCookieBanner() {
     const banner = document.getElementById('cookie-banner');
@@ -1220,294 +1270,3 @@ function applyPhoneMask(input) {
         }, 0);
     });
 }
-
-// ========= FUNCIONALIDADES DO CARROSSEL HERO =========
-
-// Inicializar carrossel do hero
-function initHeroCarousel() {
-    console.log('Inicializando carrossel do hero...');
-    
-    const carousel = document.getElementById('hero-carousel');
-    if (!carousel) {
-        console.warn('Carrossel hero não encontrado');
-        return;
-    }
-    
-    // Verificar se é dispositivo móvel - se for, desabilitar carrossel
-    if (isMobileDevice()) {
-        console.log('Dispositivo móvel detectado - desabilitando carrossel e mostrando como stack');
-        setupMobileStackLayout();
-        return;
-    }
-    
-    const slides = carousel.querySelectorAll('.carousel-slide');
-    const prevButton = document.getElementById('carousel-prev');
-    const nextButton = document.getElementById('carousel-next');
-    const indicators = document.querySelectorAll('.carousel-indicator');
-    
-    let currentSlide = 0;
-    let autoPlayInterval;
-    const autoPlayDelay = 8000; // 8 segundos
-    
-    // Função para ir para um slide específico
-    function goToSlide(slideIndex) {
-        // Remover classes ativas
-        slides.forEach((slide, index) => {
-            slide.classList.remove('active', 'prev');
-            if (index === slideIndex) {
-                slide.classList.add('active');
-            } else if (index < slideIndex) {
-                slide.classList.add('prev');
-            }
-        });
-        
-        // Atualizar indicadores
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === slideIndex);
-            indicator.classList.remove('auto-progress');
-        });
-        
-        currentSlide = slideIndex;
-        
-        // Adicionar animação de progresso no indicador ativo (apenas se auto-play estiver ativo)
-        if (autoPlayInterval && indicators[currentSlide]) {
-            indicators[currentSlide].classList.add('auto-progress');
-        }
-        
-        console.log(`Mudou para slide ${slideIndex + 1}`);
-    }
-    
-    // Função para ir para o próximo slide
-    function nextSlide() {
-        const next = (currentSlide + 1) % slides.length;
-        goToSlide(next);
-    }
-    
-    // Função para ir para o slide anterior
-    function prevSlide() {
-        const prev = (currentSlide - 1 + slides.length) % slides.length;
-        goToSlide(prev);
-    }
-    
-    // Função para iniciar auto-play
-    function startAutoPlay() {
-        stopAutoPlay(); // Limpar qualquer interval existente
-        autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
-        // Adicionar indicador de progresso
-        if (indicators[currentSlide]) {
-            indicators[currentSlide].classList.add('auto-progress');
-        }
-    }
-    
-    // Função para parar auto-play
-    function stopAutoPlay() {
-        if (autoPlayInterval) {
-            clearInterval(autoPlayInterval);
-            autoPlayInterval = null;
-        }
-        // Remover indicadores de progresso
-        indicators.forEach(indicator => {
-            indicator.classList.remove('auto-progress');
-        });
-    }
-    
-    // Event listeners para os botões de navegação
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            nextSlide();
-            stopAutoPlay();
-            // Reiniciar auto-play após 3 segundos de inatividade
-            setTimeout(startAutoPlay, 3000);
-        });
-    }
-    
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            prevSlide();
-            stopAutoPlay();
-            // Reiniciar auto-play após 3 segundos de inatividade
-            setTimeout(startAutoPlay, 3000);
-        });
-    }
-    
-    // Event listeners para os indicadores
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            goToSlide(index);
-            stopAutoPlay();
-            // Reiniciar auto-play após 3 segundos de inatividade
-            setTimeout(startAutoPlay, 3000);
-        });
-    });
-    
-    // Pausar auto-play quando o mouse estiver sobre o carrossel
-    carousel.addEventListener('mouseenter', stopAutoPlay);
-    carousel.addEventListener('mouseleave', startAutoPlay);
-    
-    // Pausar auto-play quando a aba não estiver ativa
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            stopAutoPlay();
-        } else {
-            startAutoPlay();
-        }
-    });
-    
-    // Suporte para navegação por teclado
-    document.addEventListener('keydown', (e) => {
-        // Verificar se o carrossel está visível
-        const heroSection = document.getElementById('inicio');
-        if (!heroSection) return;
-        
-        const rect = heroSection.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevSlide();
-                stopAutoPlay();
-                setTimeout(startAutoPlay, 3000);
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                nextSlide();
-                stopAutoPlay();
-                setTimeout(startAutoPlay, 3000);
-            }
-        }
-    });
-    
-    // Inicializar o carrossel
-    goToSlide(0);
-    startAutoPlay();
-    
-    console.log('Carrossel do hero inicializado com sucesso!');
-}
-
-// Função para configurar layout empilhado em mobile
-function setupMobileStackLayout() {
-    const carousel = document.getElementById('hero-carousel');
-    if (!carousel) return;
-    
-    const slides = carousel.querySelectorAll('.carousel-slide');
-    const controlsNext = document.getElementById('carousel-next');
-    const controlsPrev = document.getElementById('carousel-prev');
-    const indicators = document.querySelectorAll('.carousel-indicator');
-    
-    // Esconder controles do carrossel em mobile
-    if (controlsNext) controlsNext.style.display = 'none';
-    if (controlsPrev) controlsPrev.style.display = 'none';
-    indicators.forEach(indicator => indicator.style.display = 'none');
-    
-    // Modificar classes dos slides para layout empilhado
-    slides.forEach((slide, index) => {
-        // Remover classes de carrossel
-        slide.classList.remove('absolute', 'inset-0', 'active', 'prev');
-        slide.classList.remove('opacity-0', 'opacity-100', 'translate-x-0', 'translate-x-full', '-translate-x-full');
-        
-        // Adicionar classes para layout empilhado
-        slide.classList.add('relative', 'w-full', 'opacity-100');
-        slide.style.position = 'relative';
-        slide.style.transform = 'none';
-        slide.style.opacity = '1';
-        
-        // Adicionar separação entre os slides
-        if (index > 0) {
-            slide.style.marginTop = '4rem'; // 16 * 0.25rem = 4rem
-            
-            // Adicionar uma linha divisória visual
-            const divider = document.createElement('div');
-            divider.className = 'w-full h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-8';
-            slide.style.borderTop = '1px solid rgba(0,0,0,0.1)';
-            slide.style.paddingTop = '2rem';
-        }
-        
-        // Ajustar altura mínima para mobile
-        if (index === 1) { // Slide do LinkedIn
-            slide.style.minHeight = 'auto';
-            
-            // Ajustar layout interno para mobile
-            const container = slide.querySelector('.container');
-            if (container) {
-                const grid = container.querySelector('.grid');
-                if (grid) {
-                    grid.classList.remove('lg:grid-cols-3');
-                    grid.classList.add('grid-cols-1');
-                    
-                    // Reorganizar ordem dos elementos
-                    const textContent = grid.querySelector('.lg\\:col-span-2');
-                    const imageContent = grid.querySelector('.text-center:not(.lg\\:col-span-2)');
-                    
-                    if (textContent && imageContent) {
-                        // Colocar imagem primeiro em mobile
-                        grid.insertBefore(imageContent, textContent);
-                        
-                        // Ajustar classes
-                        textContent.classList.remove('lg:col-span-2', 'lg:text-left');
-                        textContent.classList.add('text-center');
-                    }
-                }
-            }
-        }
-    });
-    
-    // Adicionar classe especial ao container para identificar modo mobile
-    carousel.classList.add('mobile-stack-layout');
-    
-    console.log('Layout empilhado configurado para mobile');
-}
-
-// Função para resetar o carrossel (útil para debugging)
-function resetHeroCarousel() {
-    const indicators = document.querySelectorAll('.carousel-indicator');
-    indicators.forEach(indicator => {
-        indicator.classList.remove('auto-progress');
-    });
-    
-    // Reinicializar
-    initHeroCarousel();
-}
-
-// Função para lidar com mudanças de tamanho de tela
-function handleCarouselResize() {
-    const carousel = document.getElementById('hero-carousel');
-    if (!carousel) return;
-    
-    const wasMobileLayout = carousel.classList.contains('mobile-stack-layout');
-    const isMobileNow = isMobileDevice();
-    
-    // Se mudou de mobile para desktop ou vice-versa, reinicializar
-    if ((wasMobileLayout && !isMobileNow) || (!wasMobileLayout && isMobileNow)) {
-        console.log('Mudança de layout detectada, reinicializando carrossel...');
-        
-        // Resetar todas as classes e estilos
-        const slides = carousel.querySelectorAll('.carousel-slide');
-        slides.forEach(slide => {
-            slide.className = 'carousel-slide';
-            slide.style.cssText = '';
-        });
-        
-        carousel.classList.remove('mobile-stack-layout');
-        
-        // Mostrar controles novamente
-        const controlsNext = document.getElementById('carousel-next');
-        const controlsPrev = document.getElementById('carousel-prev');
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        
-        if (controlsNext) controlsNext.style.display = '';
-        if (controlsPrev) controlsPrev.style.display = '';
-        indicators.forEach(indicator => indicator.style.display = '');
-        
-        // Reinicializar
-        setTimeout(() => {
-            initHeroCarousel();
-        }, 100);
-    }
-}
-
-// Exportar funções do carrossel para uso global se necessário
-window.HeroCarousel = {
-    reset: resetHeroCarousel,
-    init: initHeroCarousel,
-    handleResize: handleCarouselResize
-};
