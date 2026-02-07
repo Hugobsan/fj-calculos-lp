@@ -806,67 +806,6 @@ function initCookieBanner() {
     setupCookieButtons();
 }
 
-// Remove o link de branding "Free Google Reviews Widget" injetado pelo Elfsight
-// Remove o link de branding só quando ele ficar visível (widget já processou)
-function removeElfsightBranding() {
-    var link = document.querySelector('a[href*="elfsight.com/google-reviews-widget"]:not([data-elfsight-observed])');
-    if (!link || !link.parentNode) return;
-
-    link.setAttribute('data-elfsight-observed', 'true');
-    var observer = new IntersectionObserver(
-        function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting && entry.target.parentNode) {
-                    entry.target.parentNode.removeChild(entry.target);
-                    observer.disconnect();
-                }
-            });
-        },
-        { threshold: 0.1, rootMargin: '0px' }
-    );
-    observer.observe(link);
-}
-
-// Widget de avaliações Google (Elfsight): oculta a seção se o script não carregar ou o widget não renderizar
-function initElfsightReviews() {
-    var ELFSIGHT_SCRIPT_URL = 'https://elfsightcdn.com/platform.js';
-    var WIDGET_APP_ID = '50d6f75c-a179-449a-b2a1-c1386c5c40fa';
-    var CHECK_WIDGET_AFTER_MS = 8000;
-    var BRANDING_CHECK_INTERVAL_MS = 500;
-    var BRANDING_CHECK_MAX_MS = 15000;
-
-    var section = document.getElementById('avaliacoes');
-    if (!section) return;
-
-    function hideAvaliacoesSection() {
-        section.style.display = 'none';
-    }
-
-    var script = document.createElement('script');
-    script.async = true;
-    script.src = ELFSIGHT_SCRIPT_URL;
-    script.onerror = function () {
-        hideAvaliacoesSection();
-    };
-    script.onload = function () {
-        var brandingCheckStart = Date.now();
-        var brandingInterval = setInterval(function () {
-            removeElfsightBranding();
-            if (Date.now() - brandingCheckStart > BRANDING_CHECK_MAX_MS) {
-                clearInterval(brandingInterval);
-            }
-        }, BRANDING_CHECK_INTERVAL_MS);
-
-        setTimeout(function () {
-            var widget = document.querySelector('.elfsight-app-' + WIDGET_APP_ID);
-            if (!widget || !widget.children || widget.children.length === 0) {
-                hideAvaliacoesSection();
-            }
-        }, CHECK_WIDGET_AFTER_MS);
-    };
-    (document.head || document.documentElement).appendChild(script);
-}
-
 // Mostrar banner de cookies
 function showCookieBanner() {
     const banner = document.getElementById('cookie-banner');
