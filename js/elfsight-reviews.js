@@ -34,7 +34,7 @@
     function initElfsightReviews() {
         var ELFSIGHT_SCRIPT_URL = 'https://elfsightcdn.com/platform.js';
         var WIDGET_APP_ID = '50d6f75c-a179-449a-b2a1-c1386c5c40fa';
-        var CHECK_WIDGET_AFTER_MS = 8000;
+        var CHECK_WIDGET_AFTER_MS = 20000; // 20s: boot + assets + render; conexões lentas precisam de mais tempo
         var BRANDING_CHECK_INTERVAL_MS = 500;
         var BRANDING_CHECK_MAX_MS = 15000;
 
