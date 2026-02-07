@@ -1,0 +1,6 @@
+name = "elfsight-boot-proxy"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Para publicar: npx wrangler deploy
+# Ou crie o Worker pelo dashboard e cole o código (veja SETUP-CLOUDFLARE-WORKER.md)

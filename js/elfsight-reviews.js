@@ -1,9 +1,16 @@
 /**
  * Widget de avaliações Google (Elfsight)
- * Carrega platform.js local (com cache do boot por 24h em platform.js) para reduzir as 200 visualizações/mês.
+ * Cache: 24h no platform.js (localStorage). Se ELFSIGHT_BOOT_PROXY_URL estiver definida, o boot usa o Worker (cache externo).
  */
 (function () {
     'use strict';
+
+    // URL do Worker Cloudflare (cache externo do boot). Ex.: 'https://elfsight-boot-proxy.xxx.workers.dev'
+    // Deixe vazio para usar só o cache no localStorage do navegador.
+    var ELFSIGHT_BOOT_PROXY_URL = 'https://fj-calculos-lp.hbsantos36.workers.dev';
+
+    // true = usa cache no localStorage; false = sempre chama o Worker (útil para testar o Worker sem cache local)
+    var ELFSIGHT_USE_LOCAL_CACHE = false;
 
     function removeElfsightBranding() {
         var link = document.querySelector('a[href*="elfsight.com/google-reviews-widget"]:not([data-elfsight-observed])');
@@ -51,7 +58,11 @@
             }, BRANDING_CHECK_INTERVAL_MS);
         }
 
-        // Cache só no boot, dentro do platform.js local; sem interceptor global para não quebrar sources/reviews
+        // Se tiver Worker configurado, o boot vai para o proxy (cache externo); senão usa platform.js com cache no localStorage
+        if (ELFSIGHT_BOOT_PROXY_URL) {
+            window.eappsCustomPlatformUrl = ELFSIGHT_BOOT_PROXY_URL.replace(/\/$/, '');
+        }
+        window.ELFSIGHT_SKIP_LOCAL_CACHE = !ELFSIGHT_USE_LOCAL_CACHE;
         var script = document.createElement('script');
         script.async = true;
         script.src = './js/elfsight/platform.js';
